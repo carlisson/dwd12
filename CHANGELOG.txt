@@ -2,3 +2,4 @@
 0.2    2020-01-02: Added vols [inicial]: estados brasileiros, machado de assis, pimentel, queiros and quental
 0.3    2020-01-02: Added secret/special volume: asteorids.txt
 0.4    2020-01-02: Inicial dwd12.sh file. Working without any customization
+0.5    2020-01-02: dwd12 with -s option, to set DWD12 set.

@@ -1,7 +1,11 @@
-/usr/lib/dwd12/sets - Global DWD12 Sets of vols
-/usr/lib/dwd12/secrets - global secret vols
 $HOME/.dwd12/sets - (User) sets of vols
 $HOME/.dwd12/secrets
+
+/usr/local/lib/dwd12/sets
+/usr/local/lib/dwd12/secrets
+
+/usr/lib/dwd12/sets - Global DWD12 Sets of vols
+/usr/lib/dwd12/secrets - global secret vols
 
 /etc/dwd12/dwd12.conf - global configuration, setting default set, default length, etc
 $HOME/.dwd12/dwd12.conf - user configuration

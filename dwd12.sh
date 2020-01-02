@@ -1,8 +1,9 @@
 #!/bin/bash
 
-DWD12VERSION='0.4'
-DWD12VOLS='./sets/inicial'
+DWD12VERSION='0.5'
+DWD12VOLS='./sets'
 DWD12SECRETS='./secrets'
+DWD12SET='inicial'
 
 # Run x d12
 # @param Number of dices. Default: 1
@@ -119,7 +120,7 @@ function rundwd12 {
 		#IJ é um array a partir do resultado de sorteio de uma palavra dicewared12
 		# onde 0: contagem de palavras; 1: tomo; 2, 3, 4: palavra
 		IJ=(${j//-/ })
-		JFILE=$(find "$DWD12VOLS" -maxdepth 1 -type f | sed -n "${IJ[1]}p")
+		JFILE=$(find "$_dset" -maxdepth 1 -type f | sed -n "${IJ[1]}p")
 		JWORD=$(( (IJ[2]-1)*144+(IJ[3]-1)*12+IJ[4] ))
 		JDW=$(sed -n "$JWORD"p < "$JFILE")
 		echo -n "$JDW "
@@ -127,4 +128,35 @@ function rundwd12 {
 	echo
 }
 
-rundwd12
+function showhelp {
+  echo "DWD12 $DWD12VERSION"
+  echo
+  echo "$ dwd12 (-s set)"
+  echo
+}
+
+while getopts "s:" option
+do
+  case ${option} in
+    s ) #Set of volumes
+      DWD12SET="$OPTARG"
+    ;;
+    h  )
+      showhelp
+      exit
+    ;;
+    \? ) #For invalid option
+      showhelp
+      exit
+    ;;
+  esac
+done
+
+# _vols=$(find "$_7LIB/dwvols" -maxdepth 1 -type f | wc -l)
+_dset=$(find $DWD12VOLS -name $DWD12SET)
+if [ "$_dset" = "" ]
+then
+  echo "Error. Set $DWD12SET not found."
+else
+  rundwd12
+fi
