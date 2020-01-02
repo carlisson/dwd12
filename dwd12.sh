@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.8'
+DWD12VERSION='0.9'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -23,6 +23,14 @@ DWD12SET='inicial'
 DWD12SIZE=4
 
 _mode="normal"
+_verbose=0 #Disable
+_vfile=$(mktemp)
+
+# Print only if mode verbose is active
+# @param string to Print
+function _vprint {
+  echo "${FUNCNAME[1]} $1" >> $_vfile
+}
 
 # Run x d12
 # @param Number of dices. Default: 1
@@ -33,6 +41,7 @@ function _rund12 {
 	else
 		DICES="$1"
 	fi
+  _vprint "Roll "$DICES"d12"
 	tr -dc '123456789XJQ' < /dev/urandom | head -c "$DICES" | sed 's/\(.\)/\1\  /g' | sed 's/X/10/g' | sed 's/J/11/g' | sed 's/Q/12/g'; echo
 }
 
@@ -50,6 +59,7 @@ function _sortaword {
 			fi
 		fi
 	fi
+  _vprint "Will work with $VOLS volumes"
 	MV=""
 	PLUS=""
 	if [ "$VOLS" -ge 10 ]
@@ -93,7 +103,8 @@ function _sortaword {
 	if [ "$VOL" = 'H' ]; then VOL=17; fi
 	if [ "$VOL" = 'I' ]; then VOL=18; fi
 	if [ "$VOL" = 'J' ]; then VOL=19; fi
-	echo "Tomo $VOL, $WRD"
+  _vprint "Volume $VOL, $WRD"
+  echo "Volume $VOL, $WRD"
 }
 
 # Sort the passphrase, just positions
@@ -114,6 +125,7 @@ function _predwd12 {
 	for i in $(seq 1 "$DWD12SIZE")
 	do
 		echo -n "WORD $i: "
+    _vprint "$VOLS"
 		_sortaword "$VOLS"
 	done
 }
@@ -158,32 +170,41 @@ function showhelp {
   echo
 }
 
-while getopts "s:w:ih" option
+while getopts "s:w:ivh" option
 do
   case ${option} in
     i ) #Information about the set of volumes
       _mode="info"
-    ;;
+      _vprint "Mode set to info"
+      ;;
     s ) #Set of volumes
       DWD12SET="$OPTARG"
-    ;;
+      _vprint "Selected set $DWD12SET"
+      ;;
+    v ) #Set mode verbose
+      _verbose=1
+      _vprint "Mode verbose turned on"
+      ;;
     w) #Size of passphrase (in Words)
   		if [ "$OPTARG" -gt 0 ]
     	then
     		if [ "$OPTARG" -lt 50 ]
     		then
     			DWD12SIZE="$OPTARG"
+          _vprint "Passphrase size set to $DWD12SIZE"
     		fi
     	fi
-    ;;
+      ;;
     h  )
       showhelp
+      rm $_vfile
       exit
-    ;;
+      ;;
     \? ) #For invalid option
       showhelp
+      rm $_vfile
       exit
-    ;;
+      ;;
   esac
 done
 
@@ -199,7 +220,13 @@ else
       showinfo
     ;;
     normal)
-      rundwd12
+      FINAL=$(rundwd12)
+      if [ $_verbose -gt 0 ]
+      then
+        cat $_vfile
+      fi
+      echo $FINAL
+      rm $_vfile
     ;;
   esac
 fi

@@ -6,3 +6,4 @@
 0.6    2020-01-02: dwd12 using Volume Set paths
 0.7    2020-01-02: dwd12 with -w option, to set passphrase size (in number of words)
 0.8    2020-01-02: dwd12 -i shows information about the volumes set.
+0.9    2020-01-02: dwd12 -v to verbose
