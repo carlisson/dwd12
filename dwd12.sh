@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.9'
+DWD12VERSION='0.10'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -48,7 +48,7 @@ function _rund12 {
 # Sort a word
 # @param Total of volumes
 function _sortaword {
-	VOLS=4 # UPDATE TO NUMBER OF VOLS IN SET
+	VOLS=$_dvls
 	if [ "$#" -ge 1 ]
 	then
 		if [ "$1" -gt 0 ]
@@ -111,7 +111,7 @@ function _sortaword {
 # @param Number of volumes (default: 4)
 # @param Number of words (default: 4)
 function _predwd12 {
-	VOLS=5
+	VOLS=$_dvls
 	if [ "$#" -ge 1 ]
 	then
 		if [ "$1" -gt 0 ]
@@ -133,7 +133,7 @@ function _predwd12 {
 # Password generator
 # @param
 function rundwd12 {
-  VOLS=4
+  VOLS=$_dvls
 	echo -n "Passphrase: "
 	for j in $(_predwd12 "$VOLS" | sed 's/[[:alpha:]]//g' | sed 's/^ //' | sed 's/://' | sed 's/,//' | sed 's/[ ]\+/-/g')
 	do
