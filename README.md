@@ -5,7 +5,7 @@ Diceware é um método de criação de senhas elaborado por Arnold Reinhold e pu
 
 A proposta Diceware D12 (ou DW12) é de uma variante do Diceware tradicional, com algumas diferenças marcantes:
 
-    Uso de dados de 12 faces. Dados de 12 faces oferecem individualmente um número bom de possibilidades. Podem ser substituídos por 2 rolagens de um dado de 6 faces ou mesmo por um baralho após uma adaptação rápida. Embora incomuns, estão presentes em qualquer “conjunto de dados para RPG”.
-    Ao invés de uma lista única de palavras, o DW12 utiliza o conceito de tomos. Antes de sortear, você escolhe tomos de onde será feito o sorteio. Cada tomo contém 1.728 palavras, de modo que o uso de 5 tomos já supera o Diceware tradicional em entropia (totaliza 8.640 palavras). Sem contar que para tentar quebrar sua senha, mesmo que o atacante conheça o método DW12, ele não saberá que subconjunto de tomos você utilizou. E a senha se torna ainda mais difícil se utilizamos um “tomo secreto”.
+* Uso de dados de 12 faces. Dados de 12 faces oferecem individualmente um número bom de possibilidades. Podem ser substituídos por 2 rolagens de um dado de 6 faces ou mesmo por um baralho após uma adaptação rápida. Embora incomuns, estão presentes em qualquer “conjunto de dados para RPG”.
+* Ao invés de uma lista única de palavras, o DW12 utiliza o conceito de tomos. Antes de sortear, você escolhe tomos de onde será feito o sorteio. Cada tomo contém 1.728 palavras, de modo que o uso de 5 tomos já supera o Diceware tradicional em entropia (totaliza 8.640 palavras). Sem contar que para tentar quebrar sua senha, mesmo que o atacante conheça o método DW12, ele não saberá que subconjunto de tomos você utilizou. E a senha se torna ainda mais difícil se utilizamos um “tomo secreto”.
 
 Este projeto fornecerá maneira automatizada de gerar senhas e criar/gerenciar tomos.
