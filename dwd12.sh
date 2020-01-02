@@ -1,8 +1,23 @@
 #!/bin/bash
 
-DWD12VERSION='0.5'
-DWD12VOLS='./sets'
+DWD12VERSION='0.6'
+
+DWD12VOLS=''
+for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
+do
+  if [ -d "$AUX" ]
+  then
+    DWD12VOLS="$AUX $DWD12VOLS"
+  fi
+done
+if [ "$DWD12VOLS" == "" ]
+then
+  echo "Error! No DWD12 volumes path created."
+  exit
+fi
+
 DWD12SECRETS='./secrets'
+
 DWD12SET='inicial'
 
 # Run x d12

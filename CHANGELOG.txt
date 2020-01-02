@@ -3,3 +3,4 @@
 0.3    2020-01-02: Added secret/special volume: asteorids.txt
 0.4    2020-01-02: Inicial dwd12.sh file. Working without any customization
 0.5    2020-01-02: dwd12 with -s option, to set DWD12 set.
+0.6    2020-01-02: dwd12 using Volume Set paths
