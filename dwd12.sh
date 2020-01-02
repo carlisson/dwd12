@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.10'
+DWD12VERSION='0.11'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -17,9 +17,6 @@ then
 fi
 
 DWD12SECRETS='./secrets'
-
-DWD12SET='inicial'
-
 DWD12SIZE=4
 
 _mode="normal"
@@ -148,6 +145,15 @@ function rundwd12 {
 	echo
 }
 
+# List all volumes sets available
+function showsets {
+  for s in $(find $DWD12VOLS -mindepth 1 -maxdepth 1 -type d)
+  do
+    echo $(basename $s) "  $s"
+  done
+}
+
+# Print information about actual vomules set
 function showinfo {
   echo "DWD12 $DWD12VERSION"
   echo
@@ -157,6 +163,7 @@ function showinfo {
 
 }
 
+# Print help menu
 function showhelp {
   echo "DWD12 $DWD12VERSION"
   echo "      Passphrase generator!"
@@ -166,11 +173,15 @@ function showhelp {
   echo "  -s _set   Generate passphrase using the set _set."
   echo "  -w _size  Gerenate passphrase with _size words."
   echo "  -i        Just show information about selected set."
+  echo "  -l        List all volumes sets available to use."
+  echo "  -v        Enable verbose mode."
   echo "  -h        Show this help menu"
   echo
 }
 
-while getopts "s:w:ivh" option
+DWD12SET=$(showsets | head -1 | cut -d\  -f 1)
+
+while getopts "s:w:livh" option
 do
   case ${option} in
     i ) #Information about the set of volumes
@@ -194,6 +205,13 @@ do
           _vprint "Passphrase size set to $DWD12SIZE"
     		fi
     	fi
+      ;;
+    l  ) #List all sets available
+      echo "Sets available:"
+      showsets
+      rm $_vfile
+      exit
+
       ;;
     h  )
       showhelp
