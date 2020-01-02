@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.6'
+DWD12VERSION='0.8'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -21,6 +21,8 @@ DWD12SECRETS='./secrets'
 DWD12SET='inicial'
 
 DWD12SIZE=4
+
+_mode="normal"
 
 # Run x d12
 # @param Number of dices. Default: 1
@@ -134,16 +136,34 @@ function rundwd12 {
 	echo
 }
 
-function showhelp {
+function showinfo {
   echo "DWD12 $DWD12VERSION"
   echo
-  echo "$ dwd12 (-s set) (-w size)"
+  echo "Set: $DWD12SET"
+  echo "Path: $_dset"
+  echo "Volumes: $_dvls"
+
+}
+
+function showhelp {
+  echo "DWD12 $DWD12VERSION"
+  echo "      Passphrase generator!"
+  echo
+  echo "$ dwd12 [options]"
+  echo
+  echo "  -s _set   Generate passphrase using the set _set."
+  echo "  -w _size  Gerenate passphrase with _size words."
+  echo "  -i        Just show information about selected set."
+  echo "  -h        Show this help menu"
   echo
 }
 
-while getopts "s:w:" option
+while getopts "s:w:ih" option
 do
   case ${option} in
+    i ) #Information about the set of volumes
+      _mode="info"
+    ;;
     s ) #Set of volumes
       DWD12SET="$OPTARG"
     ;;
@@ -169,9 +189,17 @@ done
 
 # _vols=$(find "$_7LIB/dwvols" -maxdepth 1 -type f | wc -l)
 _dset=$(find $DWD12VOLS -name $DWD12SET)
+_dvls=$(find "$_dset" -maxdepth 1 -type f | wc -l)
 if [ "$_dset" = "" ]
 then
   echo "Error. Set $DWD12SET not found."
 else
-  rundwd12
+  case ${_mode} in
+    info)
+      showinfo
+    ;;
+    normal)
+      rundwd12
+    ;;
+  esac
 fi
