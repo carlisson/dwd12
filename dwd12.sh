@@ -20,6 +20,8 @@ DWD12SECRETS='./secrets'
 
 DWD12SET='inicial'
 
+DWD12SIZE=4
+
 # Run x d12
 # @param Number of dices. Default: 1
 function _rund12 {
@@ -97,17 +99,6 @@ function _sortaword {
 # @param Number of words (default: 4)
 function _predwd12 {
 	VOLS=5
-	WORDS=4
-	if [ "$#" -gt 1 ]
-	then
-		if [ "$2" -gt 0 ]
-		then
-			if [ "$2" -lt 50 ]
-			then
-				WORDS="$2"
-			fi
-		fi
-	fi
 	if [ "$#" -ge 1 ]
 	then
 		if [ "$1" -gt 0 ]
@@ -118,7 +109,7 @@ function _predwd12 {
 			fi
 		fi
 	fi
-	for i in $(seq 1 "$WORDS")
+	for i in $(seq 1 "$DWD12SIZE")
 	do
 		echo -n "WORD $i: "
 		_sortaword "$VOLS"
@@ -146,15 +137,24 @@ function rundwd12 {
 function showhelp {
   echo "DWD12 $DWD12VERSION"
   echo
-  echo "$ dwd12 (-s set)"
+  echo "$ dwd12 (-s set) (-w size)"
   echo
 }
 
-while getopts "s:" option
+while getopts "s:w:" option
 do
   case ${option} in
     s ) #Set of volumes
       DWD12SET="$OPTARG"
+    ;;
+    w) #Size of passphrase (in Words)
+  		if [ "$OPTARG" -gt 0 ]
+    	then
+    		if [ "$OPTARG" -lt 50 ]
+    		then
+    			DWD12SIZE="$OPTARG"
+    		fi
+    	fi
     ;;
     h  )
       showhelp
