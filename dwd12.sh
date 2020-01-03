@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.15'
+DWD12VERSION='0.16'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -21,7 +21,7 @@ for AUX in $HOME/.dwd12/secrets /usr/local/lib/dwd12/secrets /usr/lib/dwd12/secr
 do
   if [ -d "$AUX" ]
   then
-    DWD12SECRETS="$AUX $DWD12SECRTS"
+    DWD12SECRETS="$AUX $DWD12SECRETS"
   fi
 done
 if [ "$DWD12SECRETS" == "" ]
@@ -156,7 +156,10 @@ function rundwd12 {
       _vprint "There are $_dvls volumes. Number $VOLS is the secret ($DWD12SEC)!"
     fi
   fi
-  echo -n "Passphrase: "
+  if [ $_verbose -eq 1 ]
+  then
+    echo -n "Passphrase: "
+  fi
 	for j in $(_predwd12 "$VOLS" | sed 's/[[:alpha:]]//g' | sed 's/^ //' | sed 's/://' | sed 's/,//' | sed 's/[ ]\+/-/g')
 	do
 		#IJ é um array a partir do resultado de sorteio de uma palavra dicewared12
@@ -169,7 +172,7 @@ function rundwd12 {
       # If mode is secure, secpos is a random number in (1..max)
       if [ ${IJ[1]} -eq $((_dvls + 1)) -o $ACTPOS -eq $SECPOS ]
       then
-        JFILE=$(find $DWD12SECRETS -maxdepth 1 -name "$DWD12SEC.txt")
+        JFILE=$(find $DWD12SECRETS -maxdepth 1 -name "$DWD12SEC.txt" | head -1)
       else
 		    JFILE=$(find "$_dset" -maxdepth 1 -type f | sed -n "${IJ[1]}p")
       fi
@@ -203,6 +206,7 @@ function showsecrets {
 # Print information about actual vomules set
 function showinfo {
   echo "DWD12 $DWD12VERSION"
+  echo $0
   echo
   echo "Set: $DWD12SET"
   echo "Path: $_dset"
@@ -214,6 +218,11 @@ function showinfo {
   else
     echo "Secret volume: $DWD12SEC"
   fi
+
+  for i in $DWD12VOLS
+  do
+    echo "Sets in $i: " $(ls $i | wc -l)
+  done
 
 }
 
@@ -252,7 +261,7 @@ do
       _vprint "Selected set $DWD12SET"
       ;;
     x ) #Set the secret volume
-        if [ $(find $DWD12SECRETS -mindepth 1 -maxdepth 1 -name $OPTARG.txt) != "" ]
+        if [ $(find $DWD12SECRETS -mindepth 1 -maxdepth 1 -name $OPTARG.txt | head -1) != "" ]
         then
           _dsec=1
           DWD12SEC="$OPTARG"
@@ -264,7 +273,7 @@ do
         fi
         ;;
     z ) #Set the secret volume
-        if [ $(find $DWD12SECRETS -mindepth 1 -maxdepth 1 -name $OPTARG.txt) != "" ]
+        if [ $(find $DWD12SECRETS -mindepth 1 -maxdepth 1 -name $OPTARG.txt | head -1) != "" ]
         then
           _dsec=1
           _mode="secure"
@@ -317,7 +326,7 @@ do
   esac
 done
 
-_dset=$(find $DWD12VOLS -name $DWD12SET)
+_dset=$(find $DWD12VOLS -name $DWD12SET | head -1)
 _dvls=$(find "$_dset" -maxdepth 1 -type f | wc -l)
 
 if [ "$_dset" = "" ]
