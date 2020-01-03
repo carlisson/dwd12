@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.13'
+DWD12VERSION='0.14'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -142,14 +142,29 @@ function _predwd12 {
 # Password generator
 # @param
 function rundwd12 {
-  VOLS=$_dvls
+  VOLS=$((_dvls + _dsec))
+  if [ $_dsec -eq 1 ]
+  then
+    _vprint "There are $_dvls volumes. Number $VOLS is the secret ($DWD12SEC)!"
+  fi
 	echo -n "Passphrase: "
 	for j in $(_predwd12 "$VOLS" | sed 's/[[:alpha:]]//g' | sed 's/^ //' | sed 's/://' | sed 's/,//' | sed 's/[ ]\+/-/g')
 	do
 		#IJ é um array a partir do resultado de sorteio de uma palavra dicewared12
 		# onde 0: contagem de palavras; 1: tomo; 2, 3, 4: palavra
 		IJ=(${j//-/ })
-		JFILE=$(find "$_dset" -maxdepth 1 -type f | sed -n "${IJ[1]}p")
+    if [ $_dsec -eq 1 ]
+    then
+      if [ ${IJ[1]} -eq $VOLS ]
+      then
+        JFILE=$(find $DWD12SECRETS -maxdepth 1 -name "$DWD12SEC.txt")
+        _vprint "Using a word from secret volume: $JFILE."
+      else
+		    JFILE=$(find "$_dset" -maxdepth 1 -type f | sed -n "${IJ[1]}p")
+      fi
+    else
+      JFILE=$(find "$_dset" -maxdepth 1 -type f | sed -n "${IJ[1]}p")
+    fi
 		JWORD=$(( (IJ[2]-1)*144+(IJ[3]-1)*12+IJ[4] ))
 		JDW=$(sed -n "$JWORD"p < "$JFILE")
 		echo -n "$JDW "
