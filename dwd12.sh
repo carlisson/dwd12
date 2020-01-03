@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.12'
+DWD12VERSION='0.13'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -185,7 +185,7 @@ function showinfo {
   then
     echo "Not using secret volume."
   else
-    echo "Secret volume: $_dsvl"
+    echo "Secret volume: $DWD12SEC"
   fi
 
 }
@@ -198,6 +198,7 @@ function showhelp {
   echo "$ dwd12 [options]"
   echo
   echo "  -s _set   Generate passphrase using the set _set."
+  echo "  -x _svol  Use given secret volume."
   echo "  -w _size  Gerenate passphrase with _size words."
   echo "  -i        Just show information about selected set."
   echo "  -l        List all volumes sets available to use."
@@ -208,8 +209,10 @@ function showhelp {
 }
 
 DWD12SET=$(showsets | head -1 | cut -d\  -f 1)
+DWD12SEC=$(basename $(find secrets -name '*.txt' | head -1) .txt)
+_dsec=0
 
-while getopts "s:w:lXivh" option
+while getopts "s:x:w:lXivh" option
 do
   case ${option} in
     i ) #Information about the set of volumes
@@ -220,6 +223,18 @@ do
       DWD12SET="$OPTARG"
       _vprint "Selected set $DWD12SET"
       ;;
+    x ) #Set the secret volume
+        if [ $(find $DWD12SECRETS -mindepth 1 -maxdepth 1 -name $OPTARG.txt) != "" ]
+        then
+          _dsec=1
+          DWD12SEC="$OPTARG"
+          _vprint "Selected secret volume $DWD12SEC"
+        else
+          echo "Error! Secret volume $OPTARG not found."
+          rm $_vfile
+          exit
+        fi
+        ;;
     v ) #Set mode verbose
       _verbose=1
       _vprint "Mode verbose turned on"
@@ -263,8 +278,6 @@ done
 
 _dset=$(find $DWD12VOLS -name $DWD12SET)
 _dvls=$(find "$_dset" -maxdepth 1 -type f | wc -l)
-_dsec=0
-_dsvl=$(find $DWD12SECRETS -name '*.txt' | head -1)
 
 if [ "$_dset" = "" ]
 then
