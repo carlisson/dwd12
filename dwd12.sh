@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.11'
+DWD12VERSION='0.12'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -16,7 +16,19 @@ then
   exit
 fi
 
-DWD12SECRETS='./secrets'
+DWD12SECRETS=''
+for AUX in $HOME/.dwd12/secrets /usr/local/lib/dwd12/secrets /usr/lib/dwd12/secrets ./secrets
+do
+  if [ -d "$AUX" ]
+  then
+    DWD12SECRETS="$AUX $DWD12SECRTS"
+  fi
+done
+if [ "$DWD12SECRETS" == "" ]
+then
+  echo "Error! No DWD12 secrets path created."
+  exit
+fi
 DWD12SIZE=4
 
 _mode="normal"
@@ -153,6 +165,14 @@ function showsets {
   done
 }
 
+# List all secret volumes available
+function showsecrets {
+  for s in $(find $DWD12SECRETS -maxdepth 1 -name '*.txt')
+  do
+    echo $(basename $s .txt) "  $s"
+  done
+}
+
 # Print information about actual vomules set
 function showinfo {
   echo "DWD12 $DWD12VERSION"
@@ -160,6 +180,13 @@ function showinfo {
   echo "Set: $DWD12SET"
   echo "Path: $_dset"
   echo "Volumes: $_dvls"
+
+  if [ $_dsec == 0 ]
+  then
+    echo "Not using secret volume."
+  else
+    echo "Secret volume: $_dsvl"
+  fi
 
 }
 
@@ -174,6 +201,7 @@ function showhelp {
   echo "  -w _size  Gerenate passphrase with _size words."
   echo "  -i        Just show information about selected set."
   echo "  -l        List all volumes sets available to use."
+  echo "  -X        List all secret volumes available."
   echo "  -v        Enable verbose mode."
   echo "  -h        Show this help menu"
   echo
@@ -181,7 +209,7 @@ function showhelp {
 
 DWD12SET=$(showsets | head -1 | cut -d\  -f 1)
 
-while getopts "s:w:livh" option
+while getopts "s:w:lXivh" option
 do
   case ${option} in
     i ) #Information about the set of volumes
@@ -213,6 +241,13 @@ do
       exit
 
       ;;
+    X  ) # List all secret volumes
+      echo "Secret volumes:"
+      showsecrets
+      rm $_vfile
+      exit
+
+      ;;
     h  )
       showhelp
       rm $_vfile
@@ -226,9 +261,11 @@ do
   esac
 done
 
-# _vols=$(find "$_7LIB/dwvols" -maxdepth 1 -type f | wc -l)
 _dset=$(find $DWD12VOLS -name $DWD12SET)
 _dvls=$(find "$_dset" -maxdepth 1 -type f | wc -l)
+_dsec=0
+_dsvl=$(find $DWD12SECRETS -name '*.txt' | head -1)
+
 if [ "$_dset" = "" ]
 then
   echo "Error. Set $DWD12SET not found."
