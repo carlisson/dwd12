@@ -13,3 +13,5 @@
 0.13   2020-01-03: dwd12 -x _sec set the secret file to use (not using yet)
 0.14   2020-01-03: dwd12 working with secret volume.
 0.15   2020-01-03: dwd12 -z _sec set the secret file and force 1 use.
+0.16   2020-01-03: dwd12 fixed bug - error when duplicate volumes available.
+0.17   2020-01-03: dwd12 -i shows the list of volumes in choosen set.

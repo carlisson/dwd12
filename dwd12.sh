@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.16'
+DWD12VERSION='0.17'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -211,6 +211,11 @@ function showinfo {
   echo "Set: $DWD12SET"
   echo "Path: $_dset"
   echo "Volumes: $_dvls"
+  for i in $(find "$_dset" -maxdepth 1 -type f)
+  do
+    echo "  -" $(basename $i)
+  done
+  echo
 
   if [ $_dsec == 0 ]
   then
