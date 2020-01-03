@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.14'
+DWD12VERSION='0.15'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -142,29 +142,41 @@ function _predwd12 {
 # Password generator
 # @param
 function rundwd12 {
-  VOLS=$((_dvls + _dsec))
-  if [ $_dsec -eq 1 ]
+  ACTPOS=0
+  if [ $_mode == "secure" ]
   then
-    _vprint "There are $_dvls volumes. Number $VOLS is the secret ($DWD12SEC)!"
+    VOLS=$_dvls
+    SECPOS=$(shuf -i 1-$DWD12SIZE -n 1)
+    _vprint "The position $SECPOS will turn into a secret-vol word."
+  else
+    VOLS=$((_dvls + _dsec))
+    SECPOS=-1
+    if [ $_dsec -eq 1 ]
+    then
+      _vprint "There are $_dvls volumes. Number $VOLS is the secret ($DWD12SEC)!"
+    fi
   fi
-	echo -n "Passphrase: "
+  echo -n "Passphrase: "
 	for j in $(_predwd12 "$VOLS" | sed 's/[[:alpha:]]//g' | sed 's/^ //' | sed 's/://' | sed 's/,//' | sed 's/[ ]\+/-/g')
 	do
 		#IJ é um array a partir do resultado de sorteio de uma palavra dicewared12
 		# onde 0: contagem de palavras; 1: tomo; 2, 3, 4: palavra
 		IJ=(${j//-/ })
+    ACTPOS=$((ACTPOS + 1))
     if [ $_dsec -eq 1 ]
     then
-      if [ ${IJ[1]} -eq $VOLS ]
+      # If mode is normal, x==max+1 => special
+      # If mode is secure, secpos is a random number in (1..max)
+      if [ ${IJ[1]} -eq $((_dvls + 1)) -o $ACTPOS -eq $SECPOS ]
       then
         JFILE=$(find $DWD12SECRETS -maxdepth 1 -name "$DWD12SEC.txt")
-        _vprint "Using a word from secret volume: $JFILE."
       else
 		    JFILE=$(find "$_dset" -maxdepth 1 -type f | sed -n "${IJ[1]}p")
       fi
     else
       JFILE=$(find "$_dset" -maxdepth 1 -type f | sed -n "${IJ[1]}p")
     fi
+    _vprint "Using a word from volume $JFILE."
 		JWORD=$(( (IJ[2]-1)*144+(IJ[3]-1)*12+IJ[4] ))
 		JDW=$(sed -n "$JWORD"p < "$JFILE")
 		echo -n "$JDW "
@@ -214,6 +226,7 @@ function showhelp {
   echo
   echo "  -s _set   Generate passphrase using the set _set."
   echo "  -x _svol  Use given secret volume."
+  echo "  -z _svol  Use given secret volume (exactly 1 of the words in passphrase)."
   echo "  -w _size  Gerenate passphrase with _size words."
   echo "  -i        Just show information about selected set."
   echo "  -l        List all volumes sets available to use."
@@ -227,7 +240,7 @@ DWD12SET=$(showsets | head -1 | cut -d\  -f 1)
 DWD12SEC=$(basename $(find secrets -name '*.txt' | head -1) .txt)
 _dsec=0
 
-while getopts "s:x:w:lXivh" option
+while getopts "s:x:z:w:lXivh" option
 do
   case ${option} in
     i ) #Information about the set of volumes
@@ -242,6 +255,19 @@ do
         if [ $(find $DWD12SECRETS -mindepth 1 -maxdepth 1 -name $OPTARG.txt) != "" ]
         then
           _dsec=1
+          DWD12SEC="$OPTARG"
+          _vprint "Selected secret volume $DWD12SEC"
+        else
+          echo "Error! Secret volume $OPTARG not found."
+          rm $_vfile
+          exit
+        fi
+        ;;
+    z ) #Set the secret volume
+        if [ $(find $DWD12SECRETS -mindepth 1 -maxdepth 1 -name $OPTARG.txt) != "" ]
+        then
+          _dsec=1
+          _mode="secure"
           DWD12SEC="$OPTARG"
           _vprint "Selected secret volume $DWD12SEC"
         else
@@ -302,7 +328,7 @@ else
     info)
       showinfo
     ;;
-    normal)
+    normal|secure)
       FINAL=$(rundwd12)
       if [ $_verbose -gt 0 ]
       then

@@ -12,3 +12,4 @@
 0.12   2020-01-03: dwd12 -X lists all secret volumes available.
 0.13   2020-01-03: dwd12 -x _sec set the secret file to use (not using yet)
 0.14   2020-01-03: dwd12 working with secret volume.
+0.15   2020-01-03: dwd12 -z _sec set the secret file and force 1 use.
