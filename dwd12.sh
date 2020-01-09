@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.18'
+DWD12VERSION='0.19'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -143,6 +143,7 @@ function _predwd12 {
 # @param
 function rundwd12 {
   ACTPOS=0
+  _vprint "Running with $DWD12SET set. Generating passphrase with $DWD12SIZE words."
   if [ $_mode == "secure" ]
   then
     VOLS=$_dvls
@@ -185,6 +186,48 @@ function rundwd12 {
 		echo -n "$JDW "
 	done
 	echo
+}
+
+function _dwd12set {
+  DWD12SET="$1"
+  _vprint "Selected set $DWD12SET"
+}
+
+function _dwd12secret {
+  if [ $(find $DWD12SECRETS -mindepth 1 -maxdepth 1 -name $1.txt | head -1) != "" ]
+  then
+    _dsec=1
+    DWD12SEC="$1"
+    _vprint "Selected secret volume $DWD12SEC"
+  else
+    echo "Error! Secret volume $1 not found."
+    rm $_vfile
+    exit
+  fi
+}
+
+function _dwd12words {
+  if [ "$1" -gt 0 ]
+  then
+    if [ "$1" -lt 50 ]
+    then
+      DWD12SIZE="$1"
+      _vprint "Passphrase size set to $DWD12SIZE"
+    fi
+  fi
+}
+
+function _dwd12verbose {
+  case $1 in
+    false )
+      _verbose=0
+      _vprint "Mode verbose turned off"
+      ;;
+    true )
+      _verbose=1
+      _vprint "Mode verbose turned on"
+      ;;
+  esac
 }
 
 # List all volumes sets available
@@ -250,9 +293,44 @@ function showhelp {
   echo
 }
 
+# Read the configuration file. PENDING
+function _readconf {
+  FILE="$1"
+  if [ -f "$FILE" ]
+  then
+    egrep -v '^#' "$FILE" | egrep -v '^$' | while read line
+    do
+      RCPARAM=$(echo "$line" | cut -d '=' -f 1)
+      RCVALUE=$(echo "$line" | cut -d '=' -f 2-)
+      _vprint "From $FILE, $RCPARAM set to $RCVALUE"
+      case $RCPARAM in
+        SET ) _dwd12set "$RCVALUE" ;;
+        SECRET ) _dwd12secret "$RCVALUE" ;;
+        MODE )
+          case "$RCVALUE" in
+            normal | secure )
+              _mode=$RCVALUE
+              _vprint "Mode set to $RCVALUE"
+              ;;
+            secret ) _mode=normal ;;
+            * ) _vprint "Invalid option ($RCVALUE) to $RCPARAM."
+          esac
+          ;;
+        WORDS ) _dwd12words "$RCVALUE" ;;
+        VERBOSE ) _dwd12verbose "$RCVALUE" ;;
+      esac
+    done
+  else
+    _vprint "Config file $FILE not found."
+  fi
+}
+
 DWD12SET=$(showsets | head -1 | cut -d\  -f 1)
 DWD12SEC=$(basename $(find secrets -name '*.txt' | head -1) .txt)
 _dsec=0
+
+_readconf "/etc/dwd12/dwd12.conf"
+_readconf "$HOME/.dwd12/dwd12.conf"
 
 while getopts "s:x:z:w:lXivh" option
 do
@@ -262,47 +340,20 @@ do
       _vprint "Mode set to info"
       ;;
     s ) #Set of volumes
-      DWD12SET="$OPTARG"
-      _vprint "Selected set $DWD12SET"
+      _dwd12set "$OPTARG"
       ;;
     x ) #Set the secret volume
-        if [ $(find $DWD12SECRETS -mindepth 1 -maxdepth 1 -name $OPTARG.txt | head -1) != "" ]
-        then
-          _dsec=1
-          DWD12SEC="$OPTARG"
-          _vprint "Selected secret volume $DWD12SEC"
-        else
-          echo "Error! Secret volume $OPTARG not found."
-          rm $_vfile
-          exit
-        fi
+        _dwd12secret "$OPTARG"
         ;;
     z ) #Set the secret volume
-        if [ $(find $DWD12SECRETS -mindepth 1 -maxdepth 1 -name $OPTARG.txt | head -1) != "" ]
-        then
-          _dsec=1
-          _mode="secure"
-          DWD12SEC="$OPTARG"
-          _vprint "Selected secret volume $DWD12SEC"
-        else
-          echo "Error! Secret volume $OPTARG not found."
-          rm $_vfile
-          exit
-        fi
+        _dwd12secret "$OPTARG"
+        _mode="secure"
         ;;
     v ) #Set mode verbose
-      _verbose=1
-      _vprint "Mode verbose turned on"
+      _dwd12verbose "true"
       ;;
     w) #Size of passphrase (in Words)
-  		if [ "$OPTARG" -gt 0 ]
-    	then
-    		if [ "$OPTARG" -lt 50 ]
-    		then
-    			DWD12SIZE="$OPTARG"
-          _vprint "Passphrase size set to $DWD12SIZE"
-    		fi
-    	fi
+      _dwd12words "$OPTARG"
       ;;
     l  ) #List all sets available
       echo "Sets available:"

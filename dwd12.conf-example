@@ -1,0 +1,20 @@
+# This file is a example and you can use it to make your own config file to dwd12
+# /etc/dwd12/dwd12.conf or $HOME/.dwd12/dwd12.conf
+
+# Default set. Use dwd12 -l to list all available
+#SET=inicial
+
+# Secret volume. Use dwd12 -X to list all secret volumes available
+#SECRET=asteroids
+
+# Set the mode, related to secret volume. There are 3 available:
+#   normal - roll without a secret volume
+#   secret - roll with a secret volume
+#   secure - roll with a mandatory secret volume
+#MODE=normal
+
+# Number or words for dwd12. Size of passphrase
+#WORDS=4
+
+# If mode verbose is active or not, by default
+#VERBOSE=false
