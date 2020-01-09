@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.17'
+DWD12VERSION='0.18'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -101,7 +101,7 @@ function _sortaword {
 	if [ "$VOLS" -ge 9 ]; then MV="$MV""9"; fi
 	MV="$MV$PLUS"
 	WRD=$(_rund12 3)
-	VOL=$(tr -dc "$MV" < /dev/urandom | head -c 1 | sed 's/^/ /g'; echo)
+	VOL=$(tr -dc "$MV" < /dev/urandom | head -c 1 | sed 's/^//g'; echo)
 	if [ "$VOL" = 'A' ]; then VOL=10; fi
 	if [ "$VOL" = 'B' ]; then VOL=11; fi
 	if [ "$VOL" = 'C' ]; then VOL=12; fi
