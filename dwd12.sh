@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.19'
+DWD12VERSION='0.20'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
@@ -218,6 +218,7 @@ function _dwd12words {
 }
 
 function _dwd12verbose {
+  _showvars "Before set verbose"
   case $1 in
     false )
       _verbose=0
@@ -228,6 +229,20 @@ function _dwd12verbose {
       _vprint "Mode verbose turned on"
       ;;
   esac
+  _showvars "After set verbose"
+}
+
+function _showvars {
+  if [ $_verbose -eq 2 ]
+  then
+    echo $1
+    echo "Variables:"
+    echo "  Set: $DWD12SET"
+    echo "  Secret: $DWD12SEC"
+    echo "  Mode: $_mode"
+    echo "  Size: $DWD12SIZE words"
+    echo "  Verbose: $_verbose"
+  fi
 }
 
 # List all volumes sets available
@@ -298,7 +313,7 @@ function _readconf {
   FILE="$1"
   if [ -f "$FILE" ]
   then
-    egrep -v '^#' "$FILE" | egrep -v '^$' | while read line
+    for line in $(egrep -v '^#' "$FILE" | egrep -v '^$')
     do
       RCPARAM=$(echo "$line" | cut -d '=' -f 1)
       RCVALUE=$(echo "$line" | cut -d '=' -f 2-)
@@ -317,20 +332,28 @@ function _readconf {
           esac
           ;;
         WORDS ) _dwd12words "$RCVALUE" ;;
-        VERBOSE ) _dwd12verbose "$RCVALUE" ;;
+        VERBOSE )
+          _dwd12verbose "$RCVALUE"
+          ;;
       esac
     done
+    _showvars "Inside readconf, middle."
   else
     _vprint "Config file $FILE not found."
   fi
+  _showvars "Inside readconf, before go out."
 }
 
 DWD12SET=$(showsets | head -1 | cut -d\  -f 1)
 DWD12SEC=$(basename $(find secrets -name '*.txt' | head -1) .txt)
 _dsec=0
 
+_showvars "Before configuration file"
+
 _readconf "/etc/dwd12/dwd12.conf"
 _readconf "$HOME/.dwd12/dwd12.conf"
+
+_showvars "After configuration file"
 
 while getopts "s:x:z:w:lXivh" option
 do
