@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DWD12VERSION='0.20'
+DWD12VERSION='0.21'
 
 DWD12VOLS=''
 for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets

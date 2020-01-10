@@ -18,3 +18,4 @@
 0.18   2020-01-09: dwd12: fixed bug in -x option.
 0.19   2020-01-09: dwd12: using configuration file (not working yet)
 0.20   2020-01-10: dwd12: fixed config-file reading
+0.21   2020-01-10: added volume set "fast" (7 vols)
