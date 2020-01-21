@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DWD12ADMINVERSION='0.1'
+DWD12ADMINVERSION='0.2'
 
 GLOBALSETS=/usr/lib/dwd12/sets
 LOCALSETS=/usr/local/lib/dwd12/sets
@@ -9,6 +9,8 @@ USERSETS=$HOME/.dwd12/sets
 GLOBALSECS=/usr/lib/dwd12/secrets
 LOCALSECS=/usr/local/lib/dwd12/secrets
 USERSECS=$HOME/.dwd12/secrets
+
+destination='user'
 
 _verbose=0 #Disable
 _vfile=$(mktemp)
@@ -19,14 +21,39 @@ function _vprint {
   echo "${FUNCNAME[1]} $1" >> $_vfile
 }
 
+function _showvars {
+  if [ $_verbose -eq 2 ]
+  then
+    echo $1
+    echo "Variables:"
+    echo "  Destination: $destination"
+    echo "  Verbose: $_verbose"
+  fi
+}
+
+function _setverbose {
+  _showvars "Before set verbose"
+  case $1 in
+    false )
+      _verbose=0
+      _vprint "Mode verbose turned off"
+      ;;
+    true )
+      _verbose=1
+      _vprint "Mode verbose turned on"
+      ;;
+  esac
+  _showvars "After set verbose"
+}
+
 # Print help menu
 function showhelp {
-  echo "DWD12 Admin $DWD12VERSION"
+  echo "DWD12 Admin $DWD12ADMINVERSION"
   echo "      Manage your DWD12 volumes!"
   echo
   echo "$ dwd12admin [options]"
   echo
-  echo "  -d _dest  Destination (global, local or user) [TO DO]"
+  echo "  -d _dest  Destination (global, local or user)"
   echo "  -n _new   Destination name [TO DO]"
   echo "  -c _set   Copy this set [TO DO]"
   echo "  -x _vol   Copy this volume to a secret [TO DO]"
@@ -42,15 +69,24 @@ function showhelp {
   echo
 }
 
-while getopts "s:x:z:w:lXivh" option
+while getopts "d:vh" option
 do
   case ${option} in
-    h  )
-      showhelp
-      rm $_vfile
-      exit
+    d  )
+      case "$OPTARG" in
+        global|local|user)
+          destination="$OPTARG"
+          _vprint "Setting destination to $OPTARG"
+          ;;
+        *)
+          echo "Unknown option! Set destination to global, local or user."
+          ;;
+      esac
       ;;
-    \? ) #For invalid option
+    v ) #Set mode verbose
+      _setverbose "true"
+      ;;
+    h | \? )
       showhelp
       rm $_vfile
       exit

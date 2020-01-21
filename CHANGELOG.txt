@@ -20,3 +20,4 @@
 0.20   2020-01-10: dwd12: fixed config-file reading
 0.21   2020-01-10: added volume set "fast" (7 vols)
 A0.1   2020-01-21: dwd12admin: concept
+A0.2   2020-02-21: dwd12admin: -d to set destination (global, local or user)
