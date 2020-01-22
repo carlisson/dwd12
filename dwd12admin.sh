@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DWD12ADMINVERSION='0.4'
+DWD12ADMINVERSION='0.5'
 
 GLOBALSETS=/usr/lib/dwd12/sets
 LOCALSETS=/usr/local/lib/dwd12/sets
@@ -48,6 +48,7 @@ function _setverbose {
   _showvars "After set verbose"
 }
 
+# Copy full set
 function dcopy {
   ORIGIN="$1"
   if [ "$name" = "undefined" ]
@@ -58,12 +59,15 @@ function dcopy {
     case "$destination" in
       global )
         FULLDE="$GLOBALSETS/$name"
+        mkdir -p "$GLOBALSETS"
         ;;
       local )
         FULLDE="$LOCALSETS/$name"
+        mkdir -p "$LOCALSETS"
         ;;
       user )
         FULLDE="$USERSETS/$name"
+        mkdir -p "$USERSETS"
         ;;
       * )
         exit;
@@ -93,6 +97,61 @@ function dcopy {
   fi
 }
 
+# Copy a volume from set to a new secret
+function scopy {
+  SETNAM=$(echo $1 | cut -d\/ -f 1)
+  VOLNAM=$(echo $1 | cut -d\/ -f 2)
+  if [ "$name" = "undefined" ]
+  then
+    name="$VOLNAM"
+    exit
+  fi
+  case "$destination" in
+    global )
+      FULLDE="$GLOBALSECS/$name.txt"
+      mkdir -p "$GLOBALSECS"
+      ;;
+    local )
+      FULLDE="$LOCALSECS/$name.txt"
+      mkdir -p "$LOCALSECS"
+      ;;
+    user )
+      FULLDE="$USERSECS/$name.txt"
+      mkdir -p "$USERSECS"
+      ;;
+    * )
+      exit;
+      ;;
+  esac
+  FULLOR="$USERSETS/$SETNAM"
+  if [ ! -d "$FULLOR" ]
+  then
+    FULLOR="$LOCALSETS/$SETNAM"
+    if [ ! -d "$FULLOR" ]
+    then
+      FULLOR="$GLOBALSETS/$SETNAM"
+      if [ ! -d "$FULLOR" ]
+      then
+        echo "Set $SETNAM not found."
+        exit
+      fi
+    fi
+  fi
+  FULLOR="$FULLOR/$VOLNAM.txt"
+  if [ ! -f "$FULLOR" ]
+  then
+    echo "Origin volume $VOLNAM not found in set $SETNAM ($FULLOR)."
+    exit
+  fi
+  if [ -f "$FULLDE" ]
+  then
+    echo "Secret volume named $name exists in $FULLDE!"
+  else
+    _vprint "cp $FULLOR $FULLDE"
+    cp "$FULLOR" "$FULLDE"
+  fi
+}
+
 # Print help menu
 function showhelp {
   echo "DWD12 Admin $DWD12ADMINVERSION"
@@ -102,8 +161,8 @@ function showhelp {
   echo
   echo "  -d _dest  Destination (global, local or user)"
   echo "  -n _new   Destination name"
-  echo "  -c _set   Copy this set [TO DO]"
-  echo "  -x _vol   Copy this volume to a secret [TO DO]"
+  echo "  -c _set   Copy this set"
+  echo "  -x _s/_v  Copy this volume to a secret (setname/volname)"
   echo "  -i _set   Install this set (directory) [TO DO]"
   echo "  -I _svol  Install this secret volume [TO DO]"
   echo "  -u _set   Uninstall this set [TO DO]"
@@ -116,7 +175,7 @@ function showhelp {
   echo
 }
 
-while getopts "d:n:c:vh" option
+while getopts "d:n:c:x:vh" option
 do
   case ${option} in
     d  )
@@ -136,6 +195,9 @@ do
       ;;
     c )
       dcopy "$OPTARG"
+      ;;
+    x )
+      scopy "$OPTARG"
       ;;
     v ) #Set mode verbose
       _setverbose "true"
