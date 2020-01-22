@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DWD12ADMINVERSION='0.2'
+DWD12ADMINVERSION='0.3'
 
 GLOBALSETS=/usr/lib/dwd12/sets
 LOCALSETS=/usr/local/lib/dwd12/sets
@@ -11,8 +11,9 @@ LOCALSECS=/usr/local/lib/dwd12/secrets
 USERSECS=$HOME/.dwd12/secrets
 
 destination='user'
+name='undefined'
 
-_verbose=0 #Disable
+_verbose=2 #Disable
 _vfile=$(mktemp)
 
 # Print only if mode verbose is active
@@ -27,6 +28,7 @@ function _showvars {
     echo $1
     echo "Variables:"
     echo "  Destination: $destination"
+    echo "  Name: $name"
     echo "  Verbose: $_verbose"
   fi
 }
@@ -54,7 +56,7 @@ function showhelp {
   echo "$ dwd12admin [options]"
   echo
   echo "  -d _dest  Destination (global, local or user)"
-  echo "  -n _new   Destination name [TO DO]"
+  echo "  -n _new   Destination name"
   echo "  -c _set   Copy this set [TO DO]"
   echo "  -x _vol   Copy this volume to a secret [TO DO]"
   echo "  -i _set   Install this set (directory) [TO DO]"
@@ -69,19 +71,23 @@ function showhelp {
   echo
 }
 
-while getopts "d:vh" option
+while getopts "d:n:vh" option
 do
   case ${option} in
     d  )
       case "$OPTARG" in
         global|local|user)
           destination="$OPTARG"
-          _vprint "Setting destination to $OPTARG"
+          _vprint "Setting destination to $destination"
           ;;
         *)
           echo "Unknown option! Set destination to global, local or user."
           ;;
       esac
+      ;;
+    n )
+      name="$OPTARG"
+      _vprint "Setting destination name to $name"
       ;;
     v ) #Set mode verbose
       _setverbose "true"
