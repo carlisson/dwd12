@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DWD12ADMINVERSION='0.3'
+DWD12ADMINVERSION='0.4'
 
 GLOBALSETS=/usr/lib/dwd12/sets
 LOCALSETS=/usr/local/lib/dwd12/sets
@@ -13,7 +13,7 @@ USERSECS=$HOME/.dwd12/secrets
 destination='user'
 name='undefined'
 
-_verbose=2 #Disable
+_verbose=0 #Disable
 _vfile=$(mktemp)
 
 # Print only if mode verbose is active
@@ -48,6 +48,51 @@ function _setverbose {
   _showvars "After set verbose"
 }
 
+function dcopy {
+  ORIGIN="$1"
+  if [ "$name" = "undefined" ]
+  then
+    echo "You need to use -n name to set the name of the copy."
+    exit
+  else
+    case "$destination" in
+      global )
+        FULLDE="$GLOBALSETS/$name"
+        ;;
+      local )
+        FULLDE="$LOCALSETS/$name"
+        ;;
+      user )
+        FULLDE="$USERSETS/$name"
+        ;;
+      * )
+        exit;
+        ;;
+      esac
+  fi
+  FULLOR="$USERSETS/$ORIGIN"
+  if [ ! -d "$FULLOR" ]
+  then
+    FULLOR="$LOCALSETS/$ORIGIN"
+    if [ ! -d "$FULLOR" ]
+    then
+      FULLOR="$GLOBALSETS/$ORIGIN"
+      if [ ! -d "$FULLOR" ]
+      then
+        echo "Set $ORIGIN not found."
+        exit
+      fi
+    fi
+  fi
+  if [ -d "$FULLDE" ]
+  then
+    echo "Set $name yet created in $FULLDE!"
+  else
+    _vprint "cp -R $FULLOR $FULLDE"
+    cp -R "$FULLOR" "$FULLDE"
+  fi
+}
+
 # Print help menu
 function showhelp {
   echo "DWD12 Admin $DWD12ADMINVERSION"
@@ -71,7 +116,7 @@ function showhelp {
   echo
 }
 
-while getopts "d:n:vh" option
+while getopts "d:n:c:vh" option
 do
   case ${option} in
     d  )
@@ -88,6 +133,9 @@ do
     n )
       name="$OPTARG"
       _vprint "Setting destination name to $name"
+      ;;
+    c )
+      dcopy "$OPTARG"
       ;;
     v ) #Set mode verbose
       _setverbose "true"
