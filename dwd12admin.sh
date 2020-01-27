@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DWD12ADMINVERSION='0.5'
+DWD12ADMINVERSION='0.6'
 
 GLOBALSETS=/usr/lib/dwd12/sets
 LOCALSETS=/usr/local/lib/dwd12/sets
@@ -48,6 +48,35 @@ function _setverbose {
   _showvars "After set verbose"
 }
 
+function generic_copy {
+  FULLOR="$1"
+  ORNAME="$2"
+  case "$destination" in
+    global )
+      FULLDE="$GLOBALSETS/$name"
+      mkdir -p "$GLOBALSETS"
+      ;;
+    local )
+      FULLDE="$LOCALSETS/$name"
+      mkdir -p "$LOCALSETS"
+      ;;
+    user )
+      FULLDE="$USERSETS/$name"
+      mkdir -p "$USERSETS"
+      ;;
+    * )
+      exit;
+      ;;
+  esac
+  if [ -d "$FULLDE" ]
+  then
+    echo "Set $name yet created in $FULLDE!"
+  else
+    _vprint "cp -R $FULLOR $FULLDE"
+    cp -R "$FULLOR" "$FULLDE"
+  fi
+}
+
 # Copy full set
 function dcopy {
   ORIGIN="$1"
@@ -55,24 +84,6 @@ function dcopy {
   then
     echo "You need to use -n name to set the name of the copy."
     exit
-  else
-    case "$destination" in
-      global )
-        FULLDE="$GLOBALSETS/$name"
-        mkdir -p "$GLOBALSETS"
-        ;;
-      local )
-        FULLDE="$LOCALSETS/$name"
-        mkdir -p "$LOCALSETS"
-        ;;
-      user )
-        FULLDE="$USERSETS/$name"
-        mkdir -p "$USERSETS"
-        ;;
-      * )
-        exit;
-        ;;
-      esac
   fi
   FULLOR="$USERSETS/$ORIGIN"
   if [ ! -d "$FULLOR" ]
@@ -88,13 +99,7 @@ function dcopy {
       fi
     fi
   fi
-  if [ -d "$FULLDE" ]
-  then
-    echo "Set $name yet created in $FULLDE!"
-  else
-    _vprint "cp -R $FULLOR $FULLDE"
-    cp -R "$FULLOR" "$FULLDE"
-  fi
+  generic_copy "$FULLOR" "$name"
 }
 
 # Copy a volume from set to a new secret
@@ -152,6 +157,22 @@ function scopy {
   fi
 }
 
+# Install a set from current directory
+function setinstall {
+  ORIG="$1"
+  if [ "$name" = "undefined" ]
+  then
+    name=$(basename "$ORIG")
+  fi
+  if [ -d "$ORIG" ]
+  then
+    _vprint "Installing $ORIG to $destination."
+    generic_copy "$ORIG"
+  else
+    echo "Set $ORIG not found in current directory ($(pwd))"
+  fi
+}
+
 # Print help menu
 function showhelp {
   echo "DWD12 Admin $DWD12ADMINVERSION"
@@ -163,7 +184,7 @@ function showhelp {
   echo "  -n _new   Destination name"
   echo "  -c _set   Copy this set"
   echo "  -x _s/_v  Copy this volume to a secret (setname/volname)"
-  echo "  -i _set   Install this set (directory) [TO DO]"
+  echo "  -i _set   Install this set (directory)"
   echo "  -I _svol  Install this secret volume [TO DO]"
   echo "  -u _set   Uninstall this set [TO DO]"
   echo "  -U _svol  Uninstall this secret volume [TO DO]"
@@ -175,7 +196,7 @@ function showhelp {
   echo
 }
 
-while getopts "d:n:c:x:vh" option
+while getopts "d:n:c:i:x:vh" option
 do
   case ${option} in
     d  )
@@ -195,6 +216,9 @@ do
       ;;
     c )
       dcopy "$OPTARG"
+      ;;
+    i )
+      setinstall "$OPTARG"
       ;;
     x )
       scopy "$OPTARG"
