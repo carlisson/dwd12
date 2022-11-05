@@ -4,7 +4,7 @@
 # @description
 # Documentation for shdoc - https://github.com/reconquest/shdoc
 
-DWD12VERSION='A0.8'
+DWD12VERSION='A0.9'
 
 # Gettext configure
 source gettext.sh
@@ -12,15 +12,20 @@ source gettext.sh
 # @description Prints message in user language, using Gettext
 # @arg $1 string Message in English to translate
 _1text() {
-	TEXTDOMAINDIR="./locale" gettext 'DWD12' "$*"
+	TEXTDOMAINDIR="$DWD12LOCALE" gettext 'DWD12' "$*"
 }
 
 DWD12VOLS=''
-for AUX in $HOME/.dwd12/sets /usr/local/lib/dwd12/sets /usr/lib/dwd12/sets ./sets
+DWD12LOCALE=''
+for AUX in $HOME/.dwd12 /usr/local/lib/dwd12 /usr/lib/dwd12 .
 do
-  if [ -d "$AUX" ]
+  if [ -d "$AUX/sets" ]
   then
-    DWD12VOLS="$AUX $DWD12VOLS"
+    DWD12VOLS="$AUX/sets $DWD12VOLS"
+  fi
+  if [ -d "$AUX/locale" ]
+  then
+    DWD12LOCALE="$AUX/locale"
   fi
 done
 if [ "$DWD12VOLS" == "" ]
@@ -28,6 +33,10 @@ then
   _1text "Error! No DWD12 volumes path created."
   echo
   exit
+fi
+if [ "$DWD12LOCALE" == "" ]
+then
+  DWD12LOCALE="locale/"
 fi
 
 DWD12SECRETS=''
@@ -45,7 +54,6 @@ then
   exit
 fi
 DWD12SIZE=4
-
 _mode="normal"
 _verbose=0 #Disable
 _vfile=$(mktemp)
@@ -140,6 +148,7 @@ _sortaword() {
 # @arg $2 int Number of words (default: 4)
 _predwd12() {
   local VOLS MSG
+
 	VOLS=$_dvls
 	if [ "$#" -ge 1 ]
 	then
@@ -164,7 +173,7 @@ rundwd12() {
   local ACTPOS VOLS SECPOS j IJ
   ACTPOS=0
   _vprint "$(printf "$(_1text "Running with %s set. Generating passphrase with %i words.")" "$DWD12SET" $DWD12SIZE)"
-
+  
   if [ "$_mode" == "secure" ]
   then
     VOLS=$_dvls
@@ -191,6 +200,7 @@ rundwd12() {
       sed 's/,//' | \
       sed 's/[ ]\+/-/g')
 	do
+
 		#IJ is an array from word shuffle result from dwd12
 		# 0: word counter; 1: vol; 2, 3, 4: words
 		IJ=(${j//-/ })
