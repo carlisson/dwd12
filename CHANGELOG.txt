@@ -25,3 +25,4 @@ A0.3   2020-02-22: dwd12admin: -n to set destination name
 A0.4   2020-02-22: dwd12admin: -c to copy a set to another name/local
 A0.5   2020-02-22: dwd12admin: -x to copy a common volume to be a secret volume
 A0.6   2020-02-27: dwd12admin: -i to install a set in current directory
+A0.7   2022-11-05: dwd12: documentation for shdoc
