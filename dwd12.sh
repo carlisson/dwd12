@@ -4,7 +4,7 @@
 # @description
 # Documentation for shdoc - https://github.com/reconquest/shdoc
 
-DWD12VERSION='A0.7'
+DWD12VERSION='A0.8'
 
 # Gettext configure
 source gettext.sh
@@ -12,7 +12,7 @@ source gettext.sh
 # @description Prints message in user language, using Gettext
 # @arg $1 string Message in English to translate
 _1text() {
-	TEXTDOMAINDIR="$_1LIB/locale" gettext 'DWD12' "$*"
+	TEXTDOMAINDIR="./locale" gettext 'DWD12' "$*"
 }
 
 DWD12VOLS=''

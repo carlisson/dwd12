@@ -1,0 +1,222 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-05 15:27-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: dwd12.sh:28
+msgid "Error! No DWD12 volumes path created."
+msgstr ""
+
+#: dwd12.sh:43
+msgid "Error! No DWD12 secrets path created."
+msgstr ""
+
+#: dwd12.sh:69
+msgid "Roll %sd12"
+msgstr ""
+
+#: dwd12.sh:88
+msgid "Will work with %i volumes."
+msgstr ""
+
+#: dwd12.sh:96
+msgid "It don't works for more then 19 volumes."
+msgstr ""
+
+#: dwd12.sh:133
+msgid "Volume %i, %s"
+msgstr ""
+
+#: dwd12.sh:156
+msgid "WORD %i: %s"
+msgstr ""
+
+#: dwd12.sh:166
+msgid "Running with %s set. Generating passphrase with %i words."
+msgstr ""
+
+#: dwd12.sh:172
+msgid "The position %i will turn into a secret-vol word."
+msgstr ""
+
+#: dwd12.sh:178
+msgid "There are %i volumes. Number %i is the secret (%s)!"
+msgstr ""
+
+#: dwd12.sh:184
+msgid "Passphrase: "
+msgstr ""
+
+#: dwd12.sh:211
+msgid "Using a word from volume %s."
+msgstr ""
+
+#: dwd12.sh:223
+msgid "Selected set %s"
+msgstr ""
+
+#: dwd12.sh:234
+msgid "Selected secret volume %s"
+msgstr ""
+
+#: dwd12.sh:236
+msgid "Error! Secret volume %s not found."
+msgstr ""
+
+#: dwd12.sh:250
+msgid "Passphrase size set to %i"
+msgstr ""
+
+#: dwd12.sh:262
+msgid "Mode verbose turned off"
+msgstr ""
+
+#: dwd12.sh:266
+msgid "Mode verbose turned on"
+msgstr ""
+
+#: dwd12.sh:277
+msgid "Variables:"
+msgstr ""
+
+#: dwd12.sh:278 dwd12.sh:310
+msgid "Set: %s"
+msgstr ""
+
+#: dwd12.sh:279
+msgid "Secret: %s"
+msgstr ""
+
+#: dwd12.sh:280
+msgid "Mode: %s"
+msgstr ""
+
+#: dwd12.sh:281
+msgid "Size: %i words"
+msgstr ""
+
+#: dwd12.sh:282
+msgid "Verbose: %s"
+msgstr ""
+
+#: dwd12.sh:311
+msgid "Path: %s"
+msgstr ""
+
+#: dwd12.sh:312
+msgid "Volumes: %s"
+msgstr ""
+
+#: dwd12.sh:321
+msgid "Not using secret volume."
+msgstr ""
+
+#: dwd12.sh:323
+msgid "Secret volume: %s"
+msgstr ""
+
+#: dwd12.sh:328
+msgid "Sets in %i: %s."
+msgstr ""
+
+#: dwd12.sh:336
+msgid "Passphrase generator!"
+msgstr ""
+
+#: dwd12.sh:338
+msgid "options"
+msgstr ""
+
+#: dwd12.sh:340
+msgid "Generate passphrase using the set _set."
+msgstr ""
+
+#: dwd12.sh:341
+msgid "Use given secret volume."
+msgstr ""
+
+#: dwd12.sh:342
+msgid "Use given secret volume (exactly 1 of the words in passphrase)."
+msgstr ""
+
+#: dwd12.sh:343
+msgid "Gerenate passphrase with _size words."
+msgstr ""
+
+#: dwd12.sh:344
+msgid "Just show information about selected set."
+msgstr ""
+
+#: dwd12.sh:345
+msgid "List all volumes sets available to use."
+msgstr ""
+
+#: dwd12.sh:346
+msgid "List all secret volumes available."
+msgstr ""
+
+#: dwd12.sh:347
+msgid "Enable verbose mode."
+msgstr ""
+
+#: dwd12.sh:348
+msgid "Show this help menu"
+msgstr ""
+
+#: dwd12.sh:370
+msgid "Mode set to %s"
+msgstr ""
+
+#: dwd12.sh:373
+msgid "Invalid option (%s) to %s."
+msgstr ""
+
+#: dwd12.sh:382
+msgid "Inside readconf, middle."
+msgstr ""
+
+#: dwd12.sh:384
+msgid "Config file %s not found."
+msgstr ""
+
+#: dwd12.sh:386
+msgid "Inside readconf, before go out."
+msgstr ""
+
+#: dwd12.sh:396
+msgid "Before configuration file"
+msgstr ""
+
+#: dwd12.sh:401
+msgid "After configuration file"
+msgstr ""
+
+#: dwd12.sh:408
+msgid "Mode set to info"
+msgstr ""
+
+#: dwd12.sh:427
+msgid "Sets available: "
+msgstr ""
+
+#: dwd12.sh:434
+msgid "Secret volumes: "
+msgstr ""
+
+#: dwd12.sh:458
+msgid "Error. Set %s not found."
+msgstr ""
