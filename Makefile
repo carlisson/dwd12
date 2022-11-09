@@ -19,3 +19,10 @@ install: dwd12.sh
 	install -m 444 locale/pt_BR/LC_MESSAGES/DWD12.mo $(DESTDIR)$(PREFIX)/lib/dwd12/locale/pt_BR/LC_MESSAGES
 	install -m 444 sets/inicial/*.txt $(DESTDIR)$(PREFIX)/lib/dwd12/sets/inicial
 	install -m 444 secrets/*.txt $(DESTDIR)$(PREFIX)/lib/dwd12/secrets
+
+user-sets: dwd12.sh
+	install -d $(HOME)/.dwd12/sets
+	install -d $(HOME)/.dwd12/sets/inicial
+	install -d $(HOME)/.dwd12/secrets
+	install -m 444 sets/inicial/*.txt $(HOME)/.dwd12/sets/inicial
+	install -m 444 secrets/*.txt $(HOME)/.dwd12/secrets
