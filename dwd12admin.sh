@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# @file dwd12admin.sh
+# @brief DiceWare D12 admin tools
+# @description
+# Documentation for shdoc - https://github.com/reconquest/shdoc
 
 DWD12ADMINVERSION='0.6'
 
@@ -16,12 +20,15 @@ name='undefined'
 _verbose=0 #Disable
 _vfile=$(mktemp)
 
-# Print only if mode verbose is active
-# @param string to Print
+# @description Print only if mode verbose is active
+# @arg $1 string String to Print
 function _vprint {
   echo "${FUNCNAME[1]} $1" >> $_vfile
 }
 
+# @description Show global variables, if verbose
+# @arg $1 string Text to show that defines the moment of the code
+# @stdout Introductory text and variable values
 function _showvars {
   if [ $_verbose -eq 2 ]
   then
@@ -33,6 +40,8 @@ function _showvars {
   fi
 }
 
+# @description Set verbose mode on/off
+# @arg $1 string Text "true" or "false"
 function _setverbose {
   _showvars "Before set verbose"
   case $1 in
@@ -48,7 +57,11 @@ function _setverbose {
   _showvars "After set verbose"
 }
 
+# @description Copy a file to global, local or user directory
+# @arg $1 string Origin name
+# @arg $2 string Destiny name
 function generic_copy {
+  local FULLOR ORNAME
   FULLOR="$1"
   ORNAME="$2"
   case "$destination" in
@@ -77,8 +90,10 @@ function generic_copy {
   fi
 }
 
-# Copy full set
+# @description Copy full set
+# @arg $1 string Set origin
 function dcopy {
+  local ORIGIN FULLOR
   ORIGIN="$1"
   if [ "$name" = "undefined" ]
   then
@@ -102,8 +117,10 @@ function dcopy {
   generic_copy "$FULLOR" "$name"
 }
 
-# Copy a volume from set to a new secret
+# @description Copy a volume from set to a new secret
+# @arg $1 string Secret volume origin in form: Set/volume
 function scopy {
+  local SETNAM VOLNAM FULLOR FULLDE
   SETNAM=$(echo $1 | cut -d\/ -f 1)
   VOLNAM=$(echo $1 | cut -d\/ -f 2)
   if [ "$name" = "undefined" ]
@@ -157,8 +174,10 @@ function scopy {
   fi
 }
 
-# Install a set from current directory
+# @description Install a set from current directory
+# @arg $1 string Origin set
 function setinstall {
+  local ORIGIN
   ORIG="$1"
   if [ "$name" = "undefined" ]
   then
@@ -173,7 +192,8 @@ function setinstall {
   fi
 }
 
-# Print help menu
+# @description Print help menu
+# @stdout Usage instructions
 function showhelp {
   echo "DWD12 Admin $DWD12ADMINVERSION"
   echo "      Manage your DWD12 volumes!"
