@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dwd 12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-16 10:20-0300\n"
+"POT-Creation-Date: 2022-12-16 10:48-0300\n"
 "PO-Revision-Date: 2022-11-05 15:27-0300\n"
 "Last-Translator: Cárlisson Galdino <cordeis@vivaldi.net>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -74,123 +74,147 @@ msgstr "Tomo secreto nomeado %s existe em %s!"
 msgid "Set %s not found in current directory (%s)."
 msgstr "Conjunto %s não encontrado no diretório atual (%s)."
 
-#: dwd12admin.sh:227 dwd12admin.sh:234 dwd12admin.sh:247
+#: dwd12admin.sh:228
+msgid "No volume or set found for %s."
+msgstr "Nenhum tomo ou conjunto encontrado para %s."
+
+#: dwd12admin.sh:241 dwd12admin.sh:248 dwd12admin.sh:262
 msgid "ok"
 msgstr "ok"
 
-#: dwd12admin.sh:229 dwd12admin.sh:236
+#: dwd12admin.sh:243 dwd12admin.sh:250
 msgid "wrong"
 msgstr "errado"
 
-#: dwd12admin.sh:244
+#: dwd12admin.sh:259
 msgid "File checked: %s"
 msgstr "Arquivo checado: %s"
 
-#: dwd12admin.sh:247
+#: dwd12admin.sh:262
 msgid "Duplicates: 0 [%s]"
 msgstr "Duplicados: 0 [%s]"
 
-#: dwd12admin.sh:249
+#: dwd12admin.sh:264
 msgid "Duplicates: %i [%s]"
 msgstr "Duplicados: %i [%s]"
 
-#: dwd12admin.sh:252
+#: dwd12admin.sh:267
 msgid "Words: %i [%s]"
 msgstr "Palavras: %i [%s]"
 
-#: dwd12admin.sh:253
+#: dwd12admin.sh:268
 msgid "Lines: %i [%s]"
 msgstr "Linhas: %i [%s]"
 
-#: dwd12admin.sh:254
+#: dwd12admin.sh:269
 msgid "Chars per word: %i.%i"
 msgstr "Caracteres por palavra: %i,%i"
 
-#: dwd12admin.sh:255
+#: dwd12admin.sh:270
 msgid "Greater word: %i chars"
 msgstr "Maior palavra: %i caracteres"
 
-#: dwd12admin.sh:259
+#: dwd12admin.sh:273
 msgid "This volume is fine."
 msgstr "Este tomo está bom."
 
-#: dwd12admin.sh:261
+#: dwd12admin.sh:277
 msgid "You need to fix some things."
 msgstr "Você precisa corrigir algumas coisas."
 
-#: dwd12admin.sh:270
+#: dwd12admin.sh:299
+msgid "Volumes to fix: %i"
+msgstr "Tomos para corrigir: %s"
+
+#: dwd12admin.sh:307
+msgid "BIG DUPLICATE TEST [%s]"
+msgstr "GRANDE TESTE DE DUPLICAÇÃO [%s]"
+
+#: dwd12admin.sh:311
+msgid "Full test: passed"
+msgstr "Teste completo: passou"
+
+#: dwd12admin.sh:314
+msgid "Duplicated words:"
+msgstr "Palavras duplicadas:"
+
+#: dwd12admin.sh:324
 msgid "Manage your DWD12 volumes!"
 msgstr "Gerencie seus tomos DWD12!"
 
-#: dwd12admin.sh:272 dwd12.sh:348
+#: dwd12admin.sh:326 dwd12.sh:348
 msgid "options"
 msgstr "opções"
 
-#: dwd12admin.sh:274
+#: dwd12admin.sh:328
 msgid "Destination (global, local or user)"
 msgstr "Destinação (global, local ou user)"
 
-#: dwd12admin.sh:275
+#: dwd12admin.sh:329
 msgid "Destination name"
 msgstr "Nome da destinação"
 
-#: dwd12admin.sh:276
+#: dwd12admin.sh:330
 msgid "Copy this set"
 msgstr "Copia este conjunto"
 
-#: dwd12admin.sh:277
+#: dwd12admin.sh:331
 msgid "Copy this volume to a secret (setname/volname)"
 msgstr "Copia este tomo para um tomo secreto (setname/volname)"
 
-#: dwd12admin.sh:278
+#: dwd12admin.sh:332
 msgid "Install this set (directory)"
 msgstr "Instala este conjunto (diretório)"
 
-#: dwd12admin.sh:279
+#: dwd12admin.sh:333
 msgid "Install this secret volume [TO DO]"
 msgstr "Instala este tomo secreto [PENDENTE]"
 
-#: dwd12admin.sh:280
+#: dwd12admin.sh:334
 msgid "Uninstall this set [TO DO]"
 msgstr "Desinstala este conjunto [PENDENTE]"
 
-#: dwd12admin.sh:281
+#: dwd12admin.sh:335
 msgid "Uninstall this secret volume [TO DO]"
 msgstr "Desinstala este tomo secreto [PENDENTE]"
 
-#: dwd12admin.sh:282
+#: dwd12admin.sh:336
 msgid "List all volumes in a set. [TO DO]"
 msgstr "Lista todos os tomos em um conjunto. [PENDENTE]"
 
-#: dwd12admin.sh:283
+#: dwd12admin.sh:337
 msgid "Test a local volume."
 msgstr ""
 
-#: dwd12admin.sh:284
+#: dwd12admin.sh:338
+msgid "Test a local volume set."
+msgstr "Testa um conjunto de tomos local."
+
+#: dwd12admin.sh:339
 msgid "List all volume sets. [TO DO]"
 msgstr "Lista todos os conjuntos de tomos. [PENDENTE]"
 
-#: dwd12admin.sh:285
+#: dwd12admin.sh:340
 msgid "List all secret volumes [TO DO]"
 msgstr "Lista todos os tomos secretos. [PENDENTE]"
 
-#: dwd12admin.sh:286 dwd12.sh:357
+#: dwd12admin.sh:341 dwd12.sh:357
 msgid "Enable verbose mode."
 msgstr "Liga o modo verboso."
 
-#: dwd12admin.sh:287 dwd12.sh:358
+#: dwd12admin.sh:342 dwd12.sh:358
 msgid "Show this help menu"
 msgstr "Mostra este menu de ajuda"
 
-#: dwd12admin.sh:298
+#: dwd12admin.sh:355
 msgid "Setting destination to %s"
 msgstr "Definindo destinação para %s"
 
-#: dwd12admin.sh:301
+#: dwd12admin.sh:358
 msgid "Unknown option! Set destination to global, local or user."
 msgstr "Opção desconhecida! Defina destinação para global, local ou user."
 
-#: dwd12admin.sh:307
+#: dwd12admin.sh:364
 msgid "Setting destination name to %s"
 msgstr "Definindo nome de destinação para %s"
 

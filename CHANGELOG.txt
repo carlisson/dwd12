@@ -34,3 +34,4 @@ A0.12  2022-12-09: dwd12admin documented with shdoc
 A0.13  2022-12-16: dwd12admin -t _file to test/check a volume
 A0.14  2022-12-16: dwd12admin -T _dir, and -t _file -T _dir
 A0.15  2022-12-16: fixed volumes in inicial set
+A0.16  2022-12-16: fixed volumes in fast set

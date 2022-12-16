@@ -4,7 +4,7 @@
 # @description
 # Documentation for shdoc - https://github.com/reconquest/shdoc
 
-DWD12VERSION='A0.15'
+DWD12VERSION='A0.16'
 
 # Gettext configure
 source gettext.sh

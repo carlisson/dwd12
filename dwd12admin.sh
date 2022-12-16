@@ -4,7 +4,7 @@
 # @description
 # Documentation for shdoc - https://github.com/reconquest/shdoc
 
-DWD12VERSION='A0.15'
+DWD12VERSION='A0.16'
 
 GLOBALSETS=/usr/lib/dwd12/sets
 LOCALSETS=/usr/local/lib/dwd12/sets
@@ -283,7 +283,7 @@ dwcheck.volume() {
 # @description Test a volume set
 # @arg $1 string Set dir name
 dwcheck.set() {
-  local _file _errors
+  local _file _errors _vols
   pushd $1 > /dev/null
   _errors=0
   for _file in $(ls *.txt)
@@ -294,8 +294,10 @@ dwcheck.set() {
       _errors=$((_errors+1))
     fi
   done
+  _vols=$(ls *.txt | wc -l)
   popd > /dev/null
   echo
+  printf "$(_1text "Volumes: %i")\n" $_vols
   printf "$(_1text "Volumes to fix: %i")\n" $_errors
 }
 

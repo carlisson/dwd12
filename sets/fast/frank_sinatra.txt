@@ -1725,3 +1725,4 @@ Russia
 rules
 rule
 rude
+sinatra
