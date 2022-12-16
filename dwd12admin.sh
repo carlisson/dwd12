@@ -4,7 +4,7 @@
 # @description
 # Documentation for shdoc - https://github.com/reconquest/shdoc
 
-DWD12ADMINVERSION='0.6'
+DWD12VERSION='A0.13'
 
 GLOBALSETS=/usr/lib/dwd12/sets
 LOCALSETS=/usr/local/lib/dwd12/sets
@@ -14,11 +14,33 @@ GLOBALSECS=/usr/lib/dwd12/secrets
 LOCALSECS=/usr/local/lib/dwd12/secrets
 USERSECS=$HOME/.dwd12/secrets
 
+DWD12LOCALE=''
+for AUX in $HOME/.dwd12 /usr/local/lib/dwd12 /usr/lib/dwd12 .
+do
+  if [ -d "$AUX/sets" ]
+  then
+    DWD12VOLS="$AUX/sets $DWD12VOLS"
+  fi
+  if [ -d "$AUX/locale" ]
+  then
+    DWD12LOCALE="$AUX/locale"
+  fi
+done
+
 destination='user'
 name='undefined'
 
 _verbose=0 #Disable
 _vfile=$(mktemp)
+
+# Gettext configure
+source gettext.sh
+
+# @description Prints message in user language, using Gettext
+# @arg $1 string Message in English to translate
+_1text() {
+	TEXTDOMAINDIR="$DWD12LOCALE" gettext 'DWD12' "$*"
+}
 
 # @description Print only if mode verbose is active
 # @arg $1 string String to Print
@@ -33,28 +55,28 @@ function _showvars {
   if [ $_verbose -eq 2 ]
   then
     echo $1
-    echo "Variables:"
-    echo "  Destination: $destination"
-    echo "  Name: $name"
-    echo "  Verbose: $_verbose"
+    printf "%s:\n" "$(_1text "Variables")"
+    printf "  %s: %s\n" "$(_1text "Destination")" "$destination"
+    printf "  %s: %s\n" "$(_1text "Name")" "$name"
+    printf "  %s: %s\n" "$(_1text "Verbose")" "$_verbose"
   fi
 }
 
 # @description Set verbose mode on/off
 # @arg $1 string Text "true" or "false"
 function _setverbose {
-  _showvars "Before set verbose"
+  _showvars "$(_1text "Before set verbose")"
   case $1 in
     false )
       _verbose=0
-      _vprint "Mode verbose turned off"
+      _vprint "$(_1text "Mode verbose turned off")"
       ;;
     true )
       _verbose=1
-      _vprint "Mode verbose turned on"
+      _vprint "$(_1text "Mode verbose turned on")"
       ;;
   esac
-  _showvars "After set verbose"
+  _showvars "$(_1text "After set verbose")"
 }
 
 # @description Copy a file to global, local or user directory
@@ -83,7 +105,7 @@ function generic_copy {
   esac
   if [ -d "$FULLDE" ]
   then
-    echo "Set $name yet created in $FULLDE!"
+    printf "$(_1text "Set %s yet created in %s!")\n" $name $FULLDE
   else
     _vprint "cp -R $FULLOR $FULLDE"
     cp -R "$FULLOR" "$FULLDE"
@@ -97,7 +119,8 @@ function dcopy {
   ORIGIN="$1"
   if [ "$name" = "undefined" ]
   then
-    echo "You need to use -n name to set the name of the copy."
+    _1text "You need to use -n name to set the name of the copy."
+    echo
     exit
   fi
   FULLOR="$USERSETS/$ORIGIN"
@@ -109,7 +132,7 @@ function dcopy {
       FULLOR="$GLOBALSETS/$ORIGIN"
       if [ ! -d "$FULLOR" ]
       then
-        echo "Set $ORIGIN not found."
+        printf "$(_1text "Set %s not found.")\n" $ORIGIN
         exit
       fi
     fi
@@ -154,7 +177,7 @@ function scopy {
       FULLOR="$GLOBALSETS/$SETNAM"
       if [ ! -d "$FULLOR" ]
       then
-        echo "Set $SETNAM not found."
+        printf "$(_1text "Set %s not found.")\n" $SETNAM
         exit
       fi
     fi
@@ -162,12 +185,12 @@ function scopy {
   FULLOR="$FULLOR/$VOLNAM.txt"
   if [ ! -f "$FULLOR" ]
   then
-    echo "Origin volume $VOLNAM not found in set $SETNAM ($FULLOR)."
+    printf "$(_1text "Origin volume %s not found in set %s (%s).")\n" "$VOLNAM" "$SETNAM" "$FULLOR"
     exit
   fi
   if [ -f "$FULLDE" ]
   then
-    echo "Secret volume named $name exists in $FULLDE!"
+    printf "$(_1text "Secret volume named %s exists in %s!")\n" $name $FULLDE
   else
     _vprint "cp $FULLOR $FULLDE"
     cp "$FULLOR" "$FULLDE"
@@ -188,31 +211,31 @@ function setinstall {
     _vprint "Installing $ORIG to $destination."
     generic_copy "$ORIG"
   else
-    echo "Set $ORIG not found in current directory ($(pwd))"
+    printf "$(_1text "Set %s not found in current directory (%s).")\n" "$ORIG" "$(pwd)"
   fi
 }
 
 # @description Print help menu
 # @stdout Usage instructions
 function showhelp {
-  echo "DWD12 Admin $DWD12ADMINVERSION"
-  echo "      Manage your DWD12 volumes!"
+  echo "DWD12 Admin $DWD12VERSION"
+  echo "      $(_1text "Manage your DWD12 volumes!")"
   echo
-  echo "$ dwd12admin [options]"
+  echo "$ dwd12admin [$(_1text "options")]"
   echo
-  echo "  -d _dest  Destination (global, local or user)"
-  echo "  -n _new   Destination name"
-  echo "  -c _set   Copy this set"
-  echo "  -x _s/_v  Copy this volume to a secret (setname/volname)"
-  echo "  -i _set   Install this set (directory)"
-  echo "  -I _svol  Install this secret volume [TO DO]"
-  echo "  -u _set   Uninstall this set [TO DO]"
-  echo "  -U _svol  Uninstall this secret volume [TO DO]"
-  echo "  -V _set   List all volumes in a set. [TO DO]"
-  echo "  -s        List all volume sets. [TO DO]"
-  echo "  -S        List all secret volumes [TO DO]"
-  echo "  -v        Enable verbose mode."
-  echo "  -h        Show this help menu"
+  echo "  -d _dest  $(_1text "Destination (global, local or user)")"
+  echo "  -n _new   $(_1text "Destination name")"
+  echo "  -c _set   $(_1text "Copy this set")"
+  echo "  -x _s/_v  $(_1text "Copy this volume to a secret (setname/volname)")"
+  echo "  -i _set   $(_1text "Install this set (directory)")"
+  echo "  -I _svol  $(_1text "Install this secret volume [TO DO]")"
+  echo "  -u _set   $(_1text "Uninstall this set [TO DO]")"
+  echo "  -U _svol  $(_1text "Uninstall this secret volume [TO DO]")"
+  echo "  -V _set   $(_1text "List all volumes in a set. [TO DO]")"
+  echo "  -s        $(_1text "List all volume sets. [TO DO]")"
+  echo "  -S        $(_1text "List all secret volumes [TO DO]")"
+  echo "  -v        $(_1text "Enable verbose mode.")"
+  echo "  -h        $(_1text "Show this help menu")"
   echo
 }
 
@@ -223,16 +246,16 @@ do
       case "$OPTARG" in
         global|local|user)
           destination="$OPTARG"
-          _vprint "Setting destination to $destination"
+          _vprint "$(printf "$(_1text "Setting destination to %s")" "$destination")"
           ;;
         *)
-          echo "Unknown option! Set destination to global, local or user."
+          echo "$(_1text "Unknown option! Set destination to global, local or user.")"
           ;;
       esac
       ;;
     n )
       name="$OPTARG"
-      _vprint "Setting destination name to $name"
+      _vprint "$(printf "$(_1text "Setting destination name to %s")" "$name")"
       ;;
     c )
       dcopy "$OPTARG"

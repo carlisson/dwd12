@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dwd 12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-16 09:12-0300\n"
+"POT-Creation-Date: 2022-11-05 15:27-0300\n"
 "PO-Revision-Date: 2022-11-05 15:27-0300\n"
 "Last-Translator: Cárlisson Galdino <cordeis@vivaldi.net>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -18,314 +18,206 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: dwd12admin.sh:45
-msgid "Variables"
-msgstr "Variáveis"
-
-#: dwd12admin.sh:46
-msgid "Destination"
-msgstr "Destinação"
-
-#: dwd12admin.sh:47
-msgid "Name"
-msgstr "Nome"
-
-#: dwd12admin.sh:48
-msgid "Verbose"
-msgstr "Verboso"
-
-#: dwd12admin.sh:55
-msgid "Before set verbose"
-msgstr "Antes de mudar o modo verboso"
-
-#: dwd12admin.sh:59 dwd12.sh:272
-msgid "Mode verbose turned off"
-msgstr "Modo verboso desligado"
-
-#: dwd12admin.sh:63 dwd12.sh:276
-msgid "Mode verbose turned on"
-msgstr "Modo verboso ligado"
-
-#: dwd12admin.sh:66
-msgid "After set verbose"
-msgstr "Depois de mudar o modo verboso"
-
-#: dwd12admin.sh:95
-msgid "Set %s yet created in %s!"
-msgstr "Conjunto %s já criado em %s!"
-
-#: dwd12admin.sh:109
-msgid "You need to use -n name to set the name of the copy."
-msgstr "Você precisa usar -n name para definir o nome da cópia."
-
-#: dwd12admin.sh:122 dwd12admin.sh:167
-msgid "Set %s not found."
-msgstr "Conjunto %s não encontrado."
-
-#: dwd12admin.sh:175
-msgid "Origin volume %s not found in set %s (%s)."
-msgstr "Volume de origem %s não encontrado no conjunto %s (%s)."
-
-#: dwd12admin.sh:180
-msgid "Secret volume named %s exists in %s!"
-msgstr "Tomo secreto nomeado %s existe em %s!"
-
-#: dwd12admin.sh:201
-msgid "Set %s not found in current directory (%s)."
-msgstr "Conjunto %s não encontrado no diretório atual (%s)."
-
-#: dwd12admin.sh:209
-msgid "Manage your DWD12 volumes!"
-msgstr "Gerencie seus tomos DWD12!"
-
-#: dwd12admin.sh:211 dwd12.sh:348
-msgid "options"
-msgstr "opções"
-
-#: dwd12admin.sh:213
-msgid "Destination (global, local or user)"
-msgstr "Destinação (global, local ou user)"
-
-#: dwd12admin.sh:214
-msgid "Destination name"
-msgstr "Nome da destinação"
-
-#: dwd12admin.sh:215
-msgid "Copy this set"
-msgstr "Copia este conjunto"
-
-#: dwd12admin.sh:216
-msgid "Copy this volume to a secret (setname/volname)"
-msgstr "Copia este tomo para um tomo secreto (setname/volname)"
-
-#: dwd12admin.sh:217
-msgid "Install this set (directory)"
-msgstr "Instala este conjunto (diretório)"
-
-#: dwd12admin.sh:218
-msgid "Install this secret volume [TO DO]"
-msgstr "Instala este tomo secreto [PENDENTE]"
-
-#: dwd12admin.sh:219
-msgid "Uninstall this set [TO DO]"
-msgstr "Desinstala este conjunto [PENDENTE]"
-
-#: dwd12admin.sh:220
-msgid "Uninstall this secret volume [TO DO]"
-msgstr "Desinstala este tomo secreto [PENDENTE]"
-
-#: dwd12admin.sh:221
-msgid "List all volumes in a set. [TO DO]"
-msgstr "Lista todos os tomos em um conjunto. [PENDENTE]"
-
-#: dwd12admin.sh:222
-msgid "List all volume sets. [TO DO]"
-msgstr "Lista todos os conjuntos de tomos. [PENDENTE]"
-
-#: dwd12admin.sh:223
-msgid "List all secret volumes [TO DO]"
-msgstr "Lista todos os tomos secretos. [PENDENTE]"
-
-#: dwd12admin.sh:224 dwd12.sh:357
-msgid "Enable verbose mode."
-msgstr "Liga o modo verboso."
-
-#: dwd12admin.sh:225 dwd12.sh:358
-msgid "Show this help menu"
-msgstr "Mostra este menu de ajuda"
-
-#: dwd12admin.sh:236
-msgid "Setting destination to %s"
-msgstr "Definindo destinação para %s"
-
-#: dwd12admin.sh:239
-msgid "Unknown option! Set destination to global, local or user."
-msgstr "Opção desconhecida! Defina destinação para global, local ou user."
-
-#: dwd12admin.sh:245
-msgid "Setting destination name to %s"
-msgstr "Definindo nome de destinação para %s"
-
-#: dwd12.sh:33
+#: dwd12.sh:28
 msgid "Error! No DWD12 volumes path created."
 msgstr "Erro! O caminho para os tomos do DWD12 não foi criado."
 
-#: dwd12.sh:52
+#: dwd12.sh:43
 msgid "Error! No DWD12 secrets path created."
 msgstr "Erro! Caminho para os tomos secretos do DWD12 não foi criado."
 
-#: dwd12.sh:77
+#: dwd12.sh:69
 msgid "Roll %sd12"
 msgstr "Rolando %sd12"
 
-#: dwd12.sh:96
+#: dwd12.sh:88
 msgid "Will work with %i volumes."
 msgstr "Trabalhará com %i tomos."
 
-#: dwd12.sh:104
+#: dwd12.sh:96
 msgid "It don't works for more then 19 volumes."
 msgstr "Não funciona para mais que 19 tomos."
 
-#: dwd12.sh:141
+#: dwd12.sh:133
 msgid "Volume %i, %s"
 msgstr "Tomo %i, %s"
 
-#: dwd12.sh:165
+#: dwd12.sh:156
 msgid "WORD %i: %s"
 msgstr "PALAVRA %i: %s"
 
-#: dwd12.sh:175
+#: dwd12.sh:166
 msgid "Running with %s set. Generating passphrase with %i words."
 msgstr "Rodando com o conjunto %s. Gerando senha com %i palavras."
 
-#: dwd12.sh:181
+#: dwd12.sh:172
 msgid "The position %i will turn into a secret-vol word."
 msgstr "A posição %i se tornará a palavra do tomo secreto."
 
-#: dwd12.sh:187
+#: dwd12.sh:178
 msgid "There are %i volumes. Number %i is the secret (%s)!"
 msgstr "Há %i tomos. Número %i é o secreto (%s)!"
 
-#: dwd12.sh:193
+#: dwd12.sh:184
 msgid "Passphrase: "
 msgstr "Senha: "
 
-#: dwd12.sh:221
+#: dwd12.sh:211
 msgid "Using a word from volume %s."
 msgstr "Usando uma palavra do volume %s."
 
-#: dwd12.sh:233
+#: dwd12.sh:223
 msgid "Selected set %s"
 msgstr "Conjunto selecionado %s"
 
-#: dwd12.sh:244
+#: dwd12.sh:234
 msgid "Selected secret volume %s"
 msgstr "Tomo secreto selecionado %s"
 
-#: dwd12.sh:246
+#: dwd12.sh:236
 msgid "Error! Secret volume %s not found."
 msgstr "Erro! Tomo secreto %s não encontrado."
 
-#: dwd12.sh:260
+#: dwd12.sh:250
 msgid "Passphrase size set to %i"
 msgstr "Tamanho dasenha definido para %i"
 
-#: dwd12.sh:287
+#: dwd12.sh:262
+msgid "Mode verbose turned off"
+msgstr "Modo verboso desligado"
+
+#: dwd12.sh:266
+msgid "Mode verbose turned on"
+msgstr "Modo verboso ligado"
+
+#: dwd12.sh:277
 msgid "Variables:"
 msgstr "Variáveis:"
 
-#: dwd12.sh:288 dwd12.sh:320
+#: dwd12.sh:278 dwd12.sh:310
 msgid "Set: %s"
 msgstr "Conjunto: %s"
 
-#: dwd12.sh:289
+#: dwd12.sh:279
 msgid "Secret: %s"
 msgstr "Secreto: %s"
 
-#: dwd12.sh:290
+#: dwd12.sh:280
 msgid "Mode: %s"
 msgstr "Modo: %s"
 
-#: dwd12.sh:291
+#: dwd12.sh:281
 msgid "Size: %i words"
 msgstr "Tamanho: %i palavras"
 
-#: dwd12.sh:292
+#: dwd12.sh:282
 msgid "Verbose: %s"
 msgstr "Verboso: %s"
 
-#: dwd12.sh:321
+#: dwd12.sh:311
 msgid "Path: %s"
 msgstr "Caminho: %s"
 
-#: dwd12.sh:322
+#: dwd12.sh:312
 msgid "Volumes: %s"
 msgstr "Tomos: %s"
 
-#: dwd12.sh:331
+#: dwd12.sh:321
 msgid "Not using secret volume."
 msgstr "Não usando tomo secreto."
 
-#: dwd12.sh:333
+#: dwd12.sh:323
 msgid "Secret volume: %s"
 msgstr "Tomo secreto: %s"
 
-#: dwd12.sh:338
+#: dwd12.sh:328
 msgid "Sets in %i: %s."
 msgstr "Conjuntos em %i: %s"
 
-#: dwd12.sh:346
+#: dwd12.sh:336
 msgid "Passphrase generator!"
 msgstr "Gerador de senhas!"
 
-#: dwd12.sh:350
+#: dwd12.sh:338
+msgid "options"
+msgstr "opções"
+
+#: dwd12.sh:340
 msgid "Generate passphrase using the set _set."
 msgstr "Gera senhas usando o conjunto _set."
 
-#: dwd12.sh:351
+#: dwd12.sh:341
 msgid "Use given secret volume."
 msgstr "Usa o tomo secreto fornecido."
 
-#: dwd12.sh:352
+#: dwd12.sh:342
 msgid "Use given secret volume (exactly 1 of the words in passphrase)."
 msgstr "Usa o tomo secreto fornecido (exatamente 1 palavra do tomo)."
 
-#: dwd12.sh:353
+#: dwd12.sh:343
 msgid "Gerenate passphrase with _size words."
 msgstr "Gera senha com _size palavras."
 
-#: dwd12.sh:354
+#: dwd12.sh:344
 msgid "Just show information about selected set."
 msgstr "Só mostra informações sobre o conjunto selecionado."
 
-#: dwd12.sh:355
+#: dwd12.sh:345
 msgid "List all volumes sets available to use."
 msgstr "Lista todos os conjuntos de tomos disponíveis para uso."
 
-#: dwd12.sh:356
+#: dwd12.sh:346
 msgid "List all secret volumes available."
 msgstr "Lista todos os tomos secretos disponíveis."
 
-#: dwd12.sh:380
+#: dwd12.sh:347
+msgid "Enable verbose mode."
+msgstr "Liga o modo verboso."
+
+#: dwd12.sh:348
+msgid "Show this help menu"
+msgstr "Mostra este menu de ajuda"
+
+#: dwd12.sh:370
 msgid "Mode set to %s"
 msgstr "Modo definido como %s"
 
-#: dwd12.sh:383
+#: dwd12.sh:373
 msgid "Invalid option (%s) to %s."
 msgstr "Opção inválida (%s) para %s."
 
-#: dwd12.sh:392
+#: dwd12.sh:382
 msgid "Inside readconf, middle."
 msgstr "Dentro do readconf, meio."
 
-#: dwd12.sh:394
+#: dwd12.sh:384
 msgid "Config file %s not found."
 msgstr "Arquivo de configuração %s não encontrado."
 
-#: dwd12.sh:396
+#: dwd12.sh:386
 msgid "Inside readconf, before go out."
 msgstr "Dentro do readconf, antes de sair."
 
-#: dwd12.sh:406
+#: dwd12.sh:396
 msgid "Before configuration file"
 msgstr "Antes do arquivo de configuração"
 
-#: dwd12.sh:411
+#: dwd12.sh:401
 msgid "After configuration file"
 msgstr "Depois do arquivo de configuração"
 
-#: dwd12.sh:418
+#: dwd12.sh:408
 msgid "Mode set to info"
 msgstr "Modo definido para info"
 
-#: dwd12.sh:437
+#: dwd12.sh:427
 msgid "Sets available: "
 msgstr "Conjuntos disponíveis: "
 
-#: dwd12.sh:444
+#: dwd12.sh:434
 msgid "Secret volumes: "
 msgstr "Tomos secretos: "
 
-#: dwd12.sh:468
+#: dwd12.sh:458
 msgid "Error. Set %s not found."
 msgstr "Erro. Conjunto %s não encontrado."
