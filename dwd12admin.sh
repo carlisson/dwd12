@@ -4,7 +4,7 @@
 # @description
 # Documentation for shdoc - https://github.com/reconquest/shdoc
 
-DWD12VERSION='A0.14'
+DWD12VERSION='A0.15'
 
 GLOBALSETS=/usr/lib/dwd12/sets
 LOCALSETS=/usr/local/lib/dwd12/sets
@@ -389,15 +389,15 @@ do
   esac
 done
 
-if [ $tfil != "" -a $tdir != "" ]
+if [ "$tfil" != "" -a "$tdir" != "" ]
 then
   dwcheck "$tdir"
   dwcheck "$tfil"
   dwcheck.full $tfil $tdir/*.txt
-elif [ $tfil != "" ]
+elif [ "$tfil" != "" ]
 then
   dwcheck "$tfil"
-elif [ $tdir != "" ]
+elif [ "$tdir" != "" ]
 then
   dwcheck "$tdir"
 fi
