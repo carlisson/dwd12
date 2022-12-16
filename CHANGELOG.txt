@@ -32,3 +32,4 @@ A0.10  2022-11-05: 3 secret volumes added: multiverso[123]
 A0.11  2022-11-09: Makefile with user-sets command
 A0.12  2022-12-09: dwd12admin documented with shdoc
 A0.13  2022-12-16: dwd12admin -t _file to test/check a volume
+A0.14  2022-12-16: dwd12admin -T _dir, and -t _file -T _dir

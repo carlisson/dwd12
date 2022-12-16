@@ -4,7 +4,7 @@
 # @description
 # Documentation for shdoc - https://github.com/reconquest/shdoc
 
-DWD12VERSION='A0.13'
+DWD12VERSION='A0.14'
 
 GLOBALSETS=/usr/lib/dwd12/sets
 LOCALSETS=/usr/local/lib/dwd12/sets
@@ -215,9 +215,23 @@ setinstall() {
   fi
 }
 
+# @description Check a volume or set
+# @arg $1 string Filename or dirname
+dwcheck() {
+  if [ -f "$1" ]
+  then
+    dwcheck.volume "$1"
+  elif [ -d "$1" ]
+  then
+    dwcheck.set "$1"
+  else
+    printf "$(_1text "No volume or set found for %s.")\n" "$1"
+  fi
+}
+
 # @description Check a volume and prints some stats about it
 # @arg $1 string Filename
-dwcheck() {
+dwcheck.volume() {
   local _file _chars _words _lines _dupls _maxim _aux _avera _cents
   local _wchk _lchk
   _file="$1"  
@@ -241,6 +255,7 @@ dwcheck() {
   _avera=$((_aux/10))
   _cents=$((_aux%10))
   _dupls=$(cat "$_file" | sort | uniq -d | wc -w)
+  echo
   printf "$(_1text "File checked: %s")\n" "$_file"
   if [ $_dupls -eq 0 ]
   then
@@ -253,14 +268,53 @@ dwcheck() {
   printf "$(_1text "Lines: %i [%s]")\n" $_lines $_lchk
   printf "$(_1text "Chars per word: %i.%i")\n" $_avera $_cents
   printf "$(_1text "Greater word: %i chars")\n" $_maxim
-  echo
   if [ $_words -eq 1728 -a $_lines -eq 1728 -a $_dupls -eq 0 ]
   then
     _1text "This volume is fine."
+    echo
+    return 0
   else
     _1text "You need to fix some things."
+    echo
+    return 1
   fi
+}
+
+# @description Test a volume set
+# @arg $1 string Set dir name
+dwcheck.set() {
+  local _file _errors
+  pushd $1 > /dev/null
+  _errors=0
+  for _file in $(ls *.txt)
+  do
+    dwcheck.volume "$_file"
+    if [ $? -gt 0 ]
+    then
+      _errors=$((_errors+1))
+    fi
+  done
+  popd > /dev/null
   echo
+  printf "$(_1text "Volumes to fix: %i")\n" $_errors
+}
+
+# @description Test a volume comparing with all tomes of some set
+# @arg $1 string File names
+dwcheck.full() {
+  local _dupls
+  echo
+  printf "$(_1text "BIG DUPLICATE TEST [%s]")\n" "$*"
+  _dupls=$(cat $* | sort | uniq -d | wc -w)
+  if [ $_dupls -eq 0 ]
+  then
+    _1text "Full test: passed"
+    echo
+  else
+    _1text "Duplicated words:"
+    echo
+    cat $* | sort | uniq -d
+  fi
 }
 
 # @description Print help menu
@@ -281,6 +335,7 @@ showhelp() {
   echo "  -U _svol  $(_1text "Uninstall this secret volume [TO DO]")"
   echo "  -V _set   $(_1text "List all volumes in a set. [TO DO]")"
   echo "  -t _file  $(_1text "Test a local volume.")"
+  echo "  -T _dir   $(_1text "Test a local volume set.")"
   echo "  -s        $(_1text "List all volume sets. [TO DO]")"
   echo "  -S        $(_1text "List all secret volumes [TO DO]")"
   echo "  -v        $(_1text "Enable verbose mode.")"
@@ -288,7 +343,9 @@ showhelp() {
   echo
 }
 
-while getopts "d:n:c:i:x:t:vh" option
+tdir="" # test dir
+tfil="" # test file
+while getopts "d:n:c:i:x:t:T:vh" option
 do
   case ${option} in
     d  )
@@ -316,7 +373,10 @@ do
       scopy "$OPTARG"
       ;;
     t )
-      dwcheck "$OPTARG"
+      tfil="$OPTARG"
+      ;;
+    T )
+      tdir="$OPTARG"
       ;;
     v ) #Set mode verbose
       _setverbose "true"
@@ -328,6 +388,19 @@ do
       ;;
   esac
 done
+
+if [ $tfil != "" -a $tdir != "" ]
+then
+  dwcheck "$tdir"
+  dwcheck "$tfil"
+  dwcheck.full $tfil $tdir/*.txt
+elif [ $tfil != "" ]
+then
+  dwcheck "$tfil"
+elif [ $tdir != "" ]
+then
+  dwcheck "$tdir"
+fi
 
 if [ $_verbose -gt 0 ]
 then
