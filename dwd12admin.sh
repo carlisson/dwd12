@@ -44,14 +44,14 @@ _1text() {
 
 # @description Print only if mode verbose is active
 # @arg $1 string String to Print
-function _vprint {
+_vprint() {
   echo "${FUNCNAME[1]} $1" >> $_vfile
 }
 
 # @description Show global variables, if verbose
 # @arg $1 string Text to show that defines the moment of the code
 # @stdout Introductory text and variable values
-function _showvars {
+_showvars() {
   if [ $_verbose -eq 2 ]
   then
     echo $1
@@ -64,7 +64,7 @@ function _showvars {
 
 # @description Set verbose mode on/off
 # @arg $1 string Text "true" or "false"
-function _setverbose {
+_setverbose() {
   _showvars "$(_1text "Before set verbose")"
   case $1 in
     false )
@@ -82,7 +82,7 @@ function _setverbose {
 # @description Copy a file to global, local or user directory
 # @arg $1 string Origin name
 # @arg $2 string Destiny name
-function generic_copy {
+generic_copy() {
   local FULLOR ORNAME
   FULLOR="$1"
   ORNAME="$2"
@@ -114,7 +114,7 @@ function generic_copy {
 
 # @description Copy full set
 # @arg $1 string Set origin
-function dcopy {
+dcopy() {
   local ORIGIN FULLOR
   ORIGIN="$1"
   if [ "$name" = "undefined" ]
@@ -142,7 +142,7 @@ function dcopy {
 
 # @description Copy a volume from set to a new secret
 # @arg $1 string Secret volume origin in form: Set/volume
-function scopy {
+scopy() {
   local SETNAM VOLNAM FULLOR FULLDE
   SETNAM=$(echo $1 | cut -d\/ -f 1)
   VOLNAM=$(echo $1 | cut -d\/ -f 2)
@@ -199,7 +199,7 @@ function scopy {
 
 # @description Install a set from current directory
 # @arg $1 string Origin set
-function setinstall {
+setinstall() {
   local ORIGIN
   ORIG="$1"
   if [ "$name" = "undefined" ]
@@ -215,9 +215,57 @@ function setinstall {
   fi
 }
 
+# @description Check a volume and prints some stats about it
+# @arg $1 string Filename
+dwcheck() {
+  local _file _chars _words _lines _dupls _maxim _aux _avera _cents
+  local _wchk _lchk
+  _file="$1"  
+  _lines=$(cat "$_file" | wc -l)
+  if [ $_lines -eq 1728 ]
+  then
+    _lchk="$(_1text "ok")"
+  else
+    _lchk="$(_1text "wrong")"
+  fi
+  _words=$(cat "$_file" | wc -w)
+  if [ $_words -eq 1728 ]
+  then
+    _wchk="$(_1text "ok")"
+  else
+    _wchk="$(_1text "wrong")"
+  fi
+  _chars=$(cat "$_file" | wc -c)
+  _maxim=$(cat "$_file" | wc -L)
+  _aux=$(( (_chars - _lines)*10/_lines))
+  _avera=$((_aux/10))
+  _cents=$((_aux%10))
+  _dupls=$(cat "$_file" | sort | uniq -d | wc -w)
+  printf "$(_1text "File checked: %s")\n" "$_file"
+  if [ $_dupls -eq 0 ]
+  then
+    printf "$(_1text "Duplicates: 0 [%s]")\n" "$(_1text "ok")"
+  else
+    printf "$(_1text "Duplicates: %i [%s]")\n" \
+      $_dupls "$(cat "$_file" | sort | uniq -d | xargs)"
+  fi
+  printf "$(_1text "Words: %i [%s]")\n" $_words $_wchk
+  printf "$(_1text "Lines: %i [%s]")\n" $_lines $_lchk
+  printf "$(_1text "Chars per word: %i.%i")\n" $_avera $_cents
+  printf "$(_1text "Greater word: %i chars")\n" $_maxim
+  echo
+  if [ $_words -eq 1728 -a $_lines -eq 1728 -a $_dupls -eq 0 ]
+  then
+    _1text "This volume is fine."
+  else
+    _1text "You need to fix some things."
+  fi
+  echo
+}
+
 # @description Print help menu
 # @stdout Usage instructions
-function showhelp {
+showhelp() {
   echo "DWD12 Admin $DWD12VERSION"
   echo "      $(_1text "Manage your DWD12 volumes!")"
   echo
@@ -232,6 +280,7 @@ function showhelp {
   echo "  -u _set   $(_1text "Uninstall this set [TO DO]")"
   echo "  -U _svol  $(_1text "Uninstall this secret volume [TO DO]")"
   echo "  -V _set   $(_1text "List all volumes in a set. [TO DO]")"
+  echo "  -t _file  $(_1text "Test a local volume.")"
   echo "  -s        $(_1text "List all volume sets. [TO DO]")"
   echo "  -S        $(_1text "List all secret volumes [TO DO]")"
   echo "  -v        $(_1text "Enable verbose mode.")"
@@ -239,7 +288,7 @@ function showhelp {
   echo
 }
 
-while getopts "d:n:c:i:x:vh" option
+while getopts "d:n:c:i:x:t:vh" option
 do
   case ${option} in
     d  )
@@ -265,6 +314,9 @@ do
       ;;
     x )
       scopy "$OPTARG"
+      ;;
+    t )
+      dwcheck "$OPTARG"
       ;;
     v ) #Set mode verbose
       _setverbose "true"
