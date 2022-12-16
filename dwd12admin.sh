@@ -4,7 +4,7 @@
 # @description
 # Documentation for shdoc - https://github.com/reconquest/shdoc
 
-DWD12VERSION='A0.16'
+DWD12VERSION='A0.17'
 
 GLOBALSETS=/usr/lib/dwd12/sets
 LOCALSETS=/usr/local/lib/dwd12/sets
@@ -319,6 +319,60 @@ dwcheck.full() {
   fi
 }
 
+# @description Check if word is in a set or volume
+# @arg $1 string Word to check
+# @arg $2 string Set or volume
+dwextract.check() {
+  local _i
+  if [ -f "$2" ]
+  then
+    grep -q "^$1\$" "$2"
+    return $?
+  else
+    for _i in $(ls $2/*.txt)
+    do
+      grep "^$1\$" "$_i"
+      if [ $? -eq 0 ]
+      then
+        return 1
+      fi
+    done
+    return 0
+  fi
+}
+
+# @description Extract words from a text file
+# @arg $1 string File from where to extract
+# @arg $2 string File or dir to compare (optional)
+dwextract() {
+  local wrd wok wno
+  local tmp=$(mktemp)
+  wok=0
+  wno=0
+  cat "$1" | xargs | tr ' ' '\n' > $tmp
+  case $# in
+    1)
+      cat $tmp
+      ;;
+    2)
+      for wrd in $(cat $tmp)
+      do
+        dwextract.check "$wrd" "$2"
+        if [ $? -eq 0 ]
+        then
+          echo $wrd
+          wok=$((wok+1))
+        else
+          wno=$((wno+1))
+        fi
+      done
+      printf "$(_1text "New words: %i")\n" $wok
+      printf "$(_1text "Repeated words: %i")\n" $wno
+      ;;
+  esac
+  rm $tmp
+}
+
 # @description Print help menu
 # @stdout Usage instructions
 showhelp() {
@@ -338,6 +392,7 @@ showhelp() {
   echo "  -V _set   $(_1text "List all volumes in a set. [TO DO]")"
   echo "  -t _file  $(_1text "Test a local volume.")"
   echo "  -T _dir   $(_1text "Test a local volume set.")"
+  echo "  -w _file  $(_1text "Extract words from a file.")"
   echo "  -s        $(_1text "List all volume sets. [TO DO]")"
   echo "  -S        $(_1text "List all secret volumes [TO DO]")"
   echo "  -v        $(_1text "Enable verbose mode.")"
@@ -347,7 +402,8 @@ showhelp() {
 
 tdir="" # test dir
 tfil="" # test file
-while getopts "d:n:c:i:x:t:T:vh" option
+xfil="" # extract words
+while getopts "d:n:c:i:x:t:T:w:vh" option
 do
   case ${option} in
     d  )
@@ -380,6 +436,9 @@ do
     T )
       tdir="$OPTARG"
       ;;
+    w )
+      wfil="$OPTARG"
+      ;;
     v ) #Set mode verbose
       _setverbose "true"
       ;;
@@ -391,17 +450,23 @@ do
   esac
 done
 
-if [ "$tfil" != "" -a "$tdir" != "" ]
+if [ "$tfil" != "" ] && [ "$tdir" != "" ]
 then
   dwcheck "$tdir"
   dwcheck "$tfil"
   dwcheck.full $tfil $tdir/*.txt
+elif [ "$wfil" != "" ] && [ "$tfil" != "" ]
+then
+  dwextract "$wfil" "$tfil"
 elif [ "$tfil" != "" ]
 then
   dwcheck "$tfil"
 elif [ "$tdir" != "" ]
 then
   dwcheck "$tdir"
+elif [ "$wfil" != "" ]
+then
+  dwextract "$wfil"
 fi
 
 if [ $_verbose -gt 0 ]
