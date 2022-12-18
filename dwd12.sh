@@ -4,7 +4,7 @@
 # @description
 # Documentation for shdoc - https://github.com/reconquest/shdoc
 
-DWD12VERSION='A0.17'
+DWD12VERSION='A0.18'
 
 # Gettext configure
 source gettext.sh
@@ -127,6 +127,7 @@ _sortaword() {
 	if [ "$VOLS" -ge 9 ]; then MV="$MV""9"; fi
 	MV="$MV$PLUS"
 	WRD=$(_rund12 3)
+  
 	VOL=$(tr -dc "$MV" < /dev/urandom | head -c 1 | sed 's/^//g'; echo)
 	if [ "$VOL" = 'A' ]; then VOL=10; fi
 	if [ "$VOL" = 'B' ]; then VOL=11; fi
@@ -192,8 +193,8 @@ rundwd12() {
   then
     _1text "Passphrase: "
   fi
-
-	for j in $(_predwd12 "$VOLS" | \
+  
+  for j in $(_predwd12 "$VOLS" | \
       sed 's/[[:alpha:]]//g' | \
       sed 's/^ //' | \
       sed 's/://' | \
@@ -218,6 +219,7 @@ rundwd12() {
     else
       JFILE=$(find "$_dset" -maxdepth 1 -type f | sed -n "${IJ[1]}p")
     fi
+    
     _vprint "$(printf "$(_1text "Using a word from volume %s.")" "$JFILE")"
 		JWORD=$(( (IJ[2]-1)*144+(IJ[3]-1)*12+IJ[4] ))
 		JDW=$(sed -n "$JWORD"p < "$JFILE")
@@ -236,7 +238,6 @@ _dwd12set() {
 # @description Choose the secret DWD12 volume
 # @arg $1 string Volume name
 _dwd12secret() {
-  local _dsec
   if [ $(find $DWD12SECRETS -mindepth 1 -maxdepth 1 -name $1.txt | head -1) != "" ]
   then
     _dsec=1
@@ -361,7 +362,7 @@ showhelp() {
 
 # @description Read the configuration file. PENDING
 _readconf() {
-  local FILE RCPARAM RCVALUE DWD12SET DWD12SEC _dsec
+  local FILE RCPARAM RCVALUE
   FILE="$1"
   if [ -f "$FILE" ]
   then

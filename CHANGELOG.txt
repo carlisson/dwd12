@@ -36,3 +36,4 @@ A0.14  2022-12-16: dwd12admin -T _dir, and -t _file -T _dir
 A0.15  2022-12-16: fixed volumes in inicial set
 A0.16  2022-12-16: fixed volumes in fast set
 A0.17  2022-12-16: dwd12admin -w to extract words (helping to create new volumes)
+A0.18  2022-12-18: fixed sume bugs in dwd12.sh
