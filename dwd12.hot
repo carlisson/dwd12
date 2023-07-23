@@ -1,0 +1,62 @@
+OUTDIR|../dwd12-page
+TITLE|DWD12 Project
+LOGO|../dwd12/d12.png
+TEMPLATE|tab
+COLORS|#fea610|#794f0f|#241803|#fbeed8
+
+INTROSECTION|Diceware and DWD12|../dwd12/d12.png|Diceware is a method for random password generation, created by Arnold Reinhold and published in 1995. Using it, you draw a few words (usually between 4 and 8 words) from a large list (with 7,776 words) using common six-sided dices and this is your new password. The Diceware D12 (or DW12) proposal is a variantion of traditional Diceware, with some striking differences.
+
+LISTSECTION|DWD12
+CHECK|Use of 12-sided dices
+CHECK|Use of many word lists, called volumes
+CHECK|Each volume has 12 pages with 12 sections with 12 words, totaling 1,728 words.
+CHECK|Each volume can be thematic (with some topic)
+CHECK|You can use a standard set of volumes or create your own custom set of volumes by grouping the desired volumes
+CHECK|You can create a secret volume to use with public volumes to increase security
+CHECK|You can use a special volume, with unusual words, intermediate between public and secret
+CHECK|This project provides shellscript commands to automate this password generation
+
+MENUSECTION|Generic/Special Volumes
+BUTTON|Nano|https://wiki.cordeis.com/dicewared12/diceware_nano|bolt
+BUTTON|Asteroides|https://wiki.cordeis.com/dicewared12/diceware_asteroides|star
+BUTTON|Multiverso|https://wiki.cordeis.com/dicewared12/diceware_multiverso|star
+BUTTON|Multiverso 2|https://wiki.cordeis.com/dicewared12/diceware_multiverso_2|star
+BUTTON|Multiverso 3|https://wiki.cordeis.com/dicewared12/diceware_multiverso_3|star
+
+MENUSECTION|Volumes in English
+BUTTON|Elton John|https://wiki.cordeis.com/dicewared12/diceware_elton_john|anchor
+BUTTON|Elvis Presley|https://wiki.cordeis.com/dicewared12/diceware_elvis_presley|anchor
+BUTTON|Frank Sinatra|https://wiki.cordeis.com/dicewared12/diceware_frank_sinatra|anchor
+BUTTON|Frank Zappa|https://wiki.cordeis.com/dicewared12/diceware_frank_zappa|anchor
+BUTTON|George Jones|https://wiki.cordeis.com/dicewared12/diceware_george_jones|anchor
+BUTTON|Willie Nelson|https://wiki.cordeis.com/dicewared12/diceware_willie_nelson|anchor
+
+MENUSECTION|Volumes in Brazilian Portuguese
+BUTTON|Castelo Branco|https://wiki.cordeis.com/dicewared12/diceware_castelo_branco|circle
+BUTTON|Chico|https://wiki.cordeis.com/dicewared12/diceware_chico|circle
+BUTTON|Eliana|https://wiki.cordeis.com/dicewared12/diceware_eliana|circle
+BUTTON|Estados|https://wiki.cordeis.com/dicewared12/diceware_estados|circle
+BUTTON|Herculano|https://wiki.cordeis.com/dicewared12/diceware_herculano|circle
+BUTTON|Machado|https://wiki.cordeis.com/dicewared12/diceware_machado|circle
+BUTTON|Noel|https://wiki.cordeis.com/dicewared12/diceware_noel|circle
+BUTTON|Pimentel|https://wiki.cordeis.com/dicewared12/diceware_pimentel|circle
+BUTTON|Queirós|https://wiki.cordeis.com/dicewared12/diceware_queiros|circle
+BUTTON|Quental|https://wiki.cordeis.com/dicewared12/diceware_quental|circle
+BUTTON|Trasgo|https://wiki.cordeis.com/dicewared12/diceware_trasgo|circle
+
+# Icons: award, book
+LISTSECTION|Usage with Dices
+CHECK|Choose your set of volumes (12 volumes is the recommended amount)
+CHECK|Set the number of words (5 or 6 usually result in good entropy)
+CHECK|For each word, roll a dice to select the volume
+CHECK|In the drawn volume, roll 3 dices: the first selects the page, the second the session and the third the word.
+
+LISTSECTION|Usage with a Linux Terminal
+CHECK|Download DWD12: git clone https://codeberg.org/bardo/dwd12
+CHECK|Enter the directory: cd dwd12
+CHECK|Run: ./dwd12.sh
+CHECK|You can run it with some arguments. See all available: ./dwd12.sh --help
+
+MENUSECTION|Links
+HBUTTON|DWD12 Project|https://codeberg.org/bardo/dwd12|home-2
+BUTTON|Wiki (PT-BR)|https://wiki.cordeis.com/dicewared12/start|umbrella
